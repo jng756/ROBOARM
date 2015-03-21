@@ -1,0 +1,23 @@
+Operando 1? : char
+hola
+Operando 2? : char
+como estas zapatá
+Operador? : +
+
+El resultado es: ERROR
+Otra vez? (S/N): S
+Operando 1? : int
+
+Operando 2? : int
+
+Operador? : +
+
+El resultado es: int
+Otra vez? (S/N): S
+Operando 1? : bool
+
+Operando 2? : bool
+
+Operador? : ==
+
+El resultado es: bool

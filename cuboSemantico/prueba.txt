@@ -1,7 +1,7 @@
 Operando 1? : char
 hola
 Operando 2? : char
-
+como estas cabron
 Operador? : +
 
 El resultado es: ERROR
