@@ -19,37 +19,49 @@ int main() {
 	int y=15;
 	string t;
 	char z=0;
-	bool temp;
+
 	Stack<int> intStack;
 	Queue<int> intQueue;
 	HashMap<char> map;
 
-	string tipo1="";
-	string tipo2="";
+	int dirV1=0;
+	int dirV2=0;
+	int dirV3=0;
 
-	varEntry variables=varEntry("xa","int");
-	varEntry variables2=varEntry("ax","int");
+	varEntry variables=varEntry("xa",5);
+	varEntry variables2=varEntry("ax",12);
 
-	tableEntry entry=tableEntry("prog","void");
+	tableEntry entry=tableEntry("sumar",23);
+	table pragma= table("programa");
 
-	table process=table();
+	//Pruebas de funcion Hash
+	string texto="A";
+	int k=0;
+	//HASH FUNCTION
+	for (unsigned int i = 0; i < texto.length(); i++)
+				            k = k + int(texto[k]);
+	cout<<"Hash de texto:"<<k<<endl;
+
+	//Termina Prueba de Hash
 
 	if (entry.addVarTable(variables))
-		cout<<"Se añadio una entrada a una tabla de variables!"<<endl;
+		cout<<"variable Local! "<<endl;
 
-	if (entry.addVarTable(variables2))
-			cout<<"Se añadio otra entrada a una tabla de variables!"<<endl;
+	if (entry.searchVarTable("xa",dirV1))
+			cout<<"Variable Local: "<<dirV1<<endl;
 
-	if (entry.searchVarTable("ax",tipo1))
-			cout<<"Se encontro la variable!"<<endl;
+	if (pragma.addGlobalVarTable(variables2))
+			cout<<"Variable Global!"<<endl;
 
+	if (pragma.searchVarGlobalTable("ax",dirV2))
+				cout<<"Variable Global: "<<dirV2<<endl;
 
-	temp=process.tableAddEntry(entry);
-	if (temp)
-		cout<<"Se añadio una entrada a la tabla"<<endl;
+	if (pragma.tableAddEntry(entry))
+		cout<<"Funcion!"<<endl;
 
-	if (process.tableSearchEntry("prog",tipo2))
-			cout<<"Se encontro la funcion en la tabla"<<endl;
+	if (pragma.tableSearchEntry("sumar",dirV3))
+			cout<<"Funcion sumar:"<<dirV3<<endl;
+
 
 
 
@@ -70,6 +82,9 @@ int main() {
 
 
 	cout << "Stack:  " <<x<< "  List:  "<<y <<" hash:"<<z<<endl; // prints !!!Hello World!!!
+
+
+
 
 
 	return 0;
