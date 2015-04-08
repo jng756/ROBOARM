@@ -1,0 +1,16 @@
+program x;
+var y,z : int;
+z,l : int;
+{ 
+if (y > x4)
+{
+y = 5;
+z = 20.1E+3;
+}
+else 
+{
+z=(10-6)*x;
+}
+
+print ("Hello World", x+3);
+}

@@ -31,7 +31,15 @@ print 		  { return PRINT; }
 read		  { return READ; }
 true 		  { yylval.bval = true ; return CTE_BOOL;}
 false         {yylval.bval = false; return CTE_BOOL;}
-
+begin		{ return TBEGIN;}
+end		{return TEND;}
+ret 	{return TRET; }
+rotateWaist	{ return ROTATEWAIST;}
+rotateShoulder	{ return ROTATESHOULDER;}
+rotateElbow	{ return ROTATEELBOW;}
+rotateWristM	{ return ROTATEWRISTM;}
+rotateWristR	{ return ROTATEWRISTR;}
+rotateTool	{ return ROTATETOOL;}
 
 		
 [a-zA-Z][a-zA-Z0-9_]* {yylval.sval = strdup(yytext); return ID; }
