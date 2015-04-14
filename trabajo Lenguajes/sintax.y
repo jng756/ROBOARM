@@ -41,6 +41,7 @@ int BOOLL=0;
 //offset Local
 int offLocal=250;
 
+
 //contador de funciones
 int contFunctions=0;
 int dirFunctions=500;
@@ -62,61 +63,83 @@ table pragma= table();
 
 bool saveVars(int tipoVar)
 {
-	int offset;
 	if (localFlag)
 		{
-			offset=offLocal;
-		}
-		else
-		{
-			offset = 0;	
-		}
-
 		while(IDQueue.dequeue(IDstring))
 		{
 			
 			variables.setNombreVar(IDstring);
 			switch(tipoVar)
 			{
-				case 0: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + CHARG + offset);
-				CHARG++;
+				case 0: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + CHARL+offLocal);
+				CHARL++;
 				//Añadir a memoria
 				//Generar el cuadruplo
 				break;
-				case 1: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + STRINGG + offset);
-				STRINGG++;
+				case 1: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + STRINGL+offLocal);
+				STRINGL++;
 				//Añadir a memoria
 				break;
-				case 2: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + INTG + offset);
-				INTG++;
+				case 2: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + INTL+offLocal);
+				INTL++;
+				cout<<"Variable: "<<IDstring <<" 	Direccion: "<<tipoVar*MEMSIZEARRAYDATA + INTL+offLocal<<endl;
 				//Añadir a memoria
 				break;
-				case 3: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + FLOATG + offset);
-				FLOATG++;
+				case 3: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + FLOATL+offLocal);
+				FLOATL++;
 				//Añadir a memoria
 				break;
-				case 4: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA+BOOLG + offset);
-				BOOLG++;
+				case 4: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA+BOOLL+offLocal);
+				BOOLL++;
 				//Añadir a memoria
 				break;
 			}
-
-			cout<<"Variable: "<<IDstring <<" 	Direccion: "<<(tipoVar*MEMSIZEARRAYDATA+INTG)<<endl;
-		
-		if (localFlag)
-				if(!entry.addVarTable(variables))
+			if(!entry.addVarTable(variables))
 				{
 				cout << "Redeclaration Variable on line: " << line_num << endl;
 				return false;
-				}	
+				}
+
+		}
+	}
 		else
-			if(!pragma.addGlobalVarTable(variables))
+		{
+			while(IDQueue.dequeue(IDstring))
+			{
+				
+				variables.setNombreVar(IDstring);
+				switch(tipoVar)
+				{
+					case 0: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + CHARG);
+					CHARG++;
+					//Añadir a memoria
+					//Generar el cuadruplo
+					break;
+					case 1: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + STRINGG);
+					STRINGG++;
+					//Añadir a memoria
+					break;
+					case 2: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + INTG);
+					INTG++;
+					cout<<"Variable: "<<IDstring <<" 	Direccion: "<<(tipoVar*MEMSIZEARRAYDATA+INTG)<<endl;
+					//Añadir a memoria
+					break;
+					case 3: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + FLOATG);
+					FLOATG++;
+					//Añadir a memoria
+					break;
+					case 4: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA+BOOLG);
+					BOOLG++;
+					//Añadir a memoria
+					break;
+				}
+				if(!pragma.addGlobalVarTable(variables))
 			{
 				cout << "Redeclaration Variable on line: " << line_num << endl;
 				return false;
 			}
-			
 		}
+	}
 
 			return true;	
 } 
@@ -202,19 +225,46 @@ programa:
 	;
 
 functions:
-	FUNCTION ID '(' def_param ')' ':' tipo endl {
+	FUNCTION ID '(' def_param ')' ':' tipo endl 
+	{
 		localFlag=true;
 		entry.setNombre($2);
 		entry.setDirVirtual(dirFunctions+contFunctions);
 		contFunctions++;
-		} 
-		vars bloque_func ';' endl functions 
+			if (!pragma.tableAddEntry(entry))
+			{
+				cout<<"No se pudo agregar: "<< $2 <<endl;
+			}
+			else
+			{
+				cout<<"Se agrega la funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<$7<<endl;
+			}
+
+	}
+		
+		vars bloque_func ';' endl
+
+		{entry.setVarTable(new HashMap<varEntry>);}
+
+		 functions 
+	
 	| FUNCTION ID '(' def_param ')' ':' VOID endl {
 		localFlag=true;
 		entry.setNombre($2);
 		entry.setDirVirtual(dirFunctions+contFunctions);
 		contFunctions++;
-		} vars bloque_func2 ';' endl functions 
+		if (!pragma.tableAddEntry(entry))
+			{
+				cout<<"No se pudo agregar: "<< $2 <<endl;
+			}
+		else
+			{
+			cout<<"Se agrega la funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
+			}
+		} vars bloque_func2 ';' endl 
+
+		{entry.setVarTable(new HashMap<varEntry>);}
+		functions 
 	|
 	;
 
@@ -251,7 +301,7 @@ def_id:
 	|  ID  
 	{
 		IDQueue.enqueue($1);
-			}
+	}
 	;
 
 tipo:
