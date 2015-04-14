@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <string>
-#include <HashTable.h>
+#include "HashTable.h"
 using namespace std;
 
 class varEntry {

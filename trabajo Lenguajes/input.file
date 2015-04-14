@@ -1,8 +1,9 @@
 program x;
-var y,z : int;
-z,l : int;
+var yes,z : int;
+i,l: int;
 function suma(op1:int, op2:int) : int
-	var resultado:int;
+	var resul:int;
+	
 {
 	resultado=op1+op2;
 	ret resultado

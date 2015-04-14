@@ -1,7 +1,14 @@
 program x;
-var y,z : int;
-z,l : int;
-{ 
+var yes,z : int;
+i,l: int;
+function suma(op1:int, op2:int) : int
+	var resul:int;
+	 otro : int;
+{
+	resultado=op1+op2;
+	ret resultado
+};
+begin
 if (y > x4)
 {
 y = 5;
@@ -11,6 +18,7 @@ else
 {
 z=(10-6)*x;
 }
-
+rotateTool(z);
+rotateElbow(180);
 print ("Hello World", x+3);
-}
+end
