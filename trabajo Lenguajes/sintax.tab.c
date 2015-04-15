@@ -140,7 +140,7 @@ Queue<IDs> IDstruct;
 
 //Stacks para expresiones
 Stack<string> pilaO;
-Stack<int> tipo;
+Stack<int> Ptipos;
 Stack<char> pilaOper;
 
 //Declaracion de archivo de cuadruplos
@@ -251,6 +251,8 @@ int buscaID(string IDstr)
 				cout<<"Variable no definida"<<endl;
 				return -1;
 			}
+//Direcciones Globales
+
 if 	(dirVirtual<MEMSIZEARRAYDATA)
 	return 0;
 else if (dirVirtual>MEMSIZEARRAYDATA*1-1 && dirVirtual<MEMSIZEARRAYDATA*2)
@@ -261,11 +263,20 @@ else if (dirVirtual>MEMSIZEARRAYDATA*3-1 && dirVirtual<MEMSIZEARRAYDATA*4)
 	return 3;
 else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
 	return 4;
-else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
-	return 5;
 
+//Direcciones locales
 
-	return 1;	
+else if (dirVirtual>offLocal && dirVirtual<offLocal+MEMSIZEARRAYDATA)
+	return 0;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*1-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*2)
+	return 1;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*2-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*3)
+	return 2;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*3-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*4)
+	return 3;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*4-1 && dirVirtual<offLocal+MEMSIZEARRAYDATA*5)
+	return 4;
+
 } 
 
 string decodificaTipo(int tipo)
@@ -345,7 +356,7 @@ void generaExpresion()
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 	 			cout<<"resultado: "<<resultado<<endl;
-	 			cout<<"resultado: "<<resultado;
+	 	
 	 			pilaO.push(resultado);
 	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
@@ -376,7 +387,7 @@ void generaExpresion()
 
 
 /* Line 268 of yacc.c  */
-#line 380 "sintax.tab.c"
+#line 391 "sintax.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -447,7 +458,7 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 314 "sintax.y"
+#line 325 "sintax.y"
 
 	int ival;
 	float fval;
@@ -458,7 +469,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 462 "sintax.tab.c"
+#line 473 "sintax.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -470,7 +481,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 474 "sintax.tab.c"
+#line 485 "sintax.tab.c"
 
 #ifdef short
 # undef short
@@ -798,15 +809,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   376,   376,   379,   376,   387,   419,   386,   423,   439,
-     423,   441,   445,   451,   461,   462,   466,   472,   480,   485,
-     492,   493,   494,   495,   496,   500,   504,   507,   510,   514,
-     515,   519,   520,   521,   522,   523,   524,   525,   529,   533,
-     537,   540,   544,   548,   553,   554,   555,   556,   557,   558,
-     562,   563,   567,   568,   572,   576,   577,   578,   579,   580,
-     584,   586,   585,   596,   595,   608,   610,   609,   618,   617,
-     627,   628,   629,   630,   634,   637,   638,   639,   640,   641,
-     645,   646
+       0,   387,   387,   390,   387,   398,   430,   397,   434,   450,
+     434,   452,   456,   462,   472,   473,   477,   483,   491,   496,
+     503,   504,   505,   506,   507,   511,   515,   518,   521,   525,
+     526,   530,   531,   532,   533,   534,   535,   536,   540,   544,
+     548,   551,   555,   559,   564,   565,   566,   567,   568,   569,
+     573,   574,   578,   579,   583,   587,   588,   589,   590,   591,
+     595,   597,   596,   607,   606,   619,   621,   620,   629,   628,
+     638,   639,   640,   641,   645,   653,   654,   655,   656,   657,
+     661,   662
 };
 #endif
 
@@ -1876,7 +1887,7 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 376 "sintax.y"
+#line 387 "sintax.y"
     {
 		pragma.setNombre((yyvsp[(2) - (2)].sval));
 	}
@@ -1885,7 +1896,7 @@ yyreduce:
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 379 "sintax.y"
+#line 390 "sintax.y"
     {
 		localFlag=false;
 	}
@@ -1894,14 +1905,14 @@ yyreduce:
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 382 "sintax.y"
+#line 393 "sintax.y"
     {  cout << "Fin del analisis del programa " << endl; }
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 387 "sintax.y"
+#line 398 "sintax.y"
     {
 		localFlag=true;
 		entry.setNombre((yyvsp[(2) - (8)].sval));
@@ -1916,7 +1927,7 @@ yyreduce:
 				cout<<"Funcion: "<< (yyvsp[(2) - (8)].sval)<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<(yyvsp[(7) - (8)].ival)<<endl;
 			}
 
-			myQuadStructure<<"function \t" <<(yyvsp[(2) - (8)].sval)<<" \t" <<decodificaTipo((yyvsp[(7) - (8)].ival))<<endl;
+			myQuadStructure<<"Funcion \t" <<(yyvsp[(2) - (8)].sval)<<" \t" <<decodificaTipo((yyvsp[(7) - (8)].ival))<<endl;
 
 
 
@@ -1935,14 +1946,14 @@ yyreduce:
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 419 "sintax.y"
+#line 430 "sintax.y"
     {entry.setVarTable(new HashMap<varEntry>);}
     break;
 
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 423 "sintax.y"
+#line 434 "sintax.y"
     {
 		localFlag=true;
 		entry.setNombre((yyvsp[(2) - (8)].sval));
@@ -1954,7 +1965,7 @@ yyreduce:
 			}
 		else
 			{
-			cout<<"Se agrega la funcion: "<< (yyvsp[(2) - (8)].sval)<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
+			cout<<"Funcion: "<< (yyvsp[(2) - (8)].sval)<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
 			}
 		}
     break;
@@ -1962,14 +1973,14 @@ yyreduce:
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 439 "sintax.y"
+#line 450 "sintax.y"
     {entry.setVarTable(new HashMap<varEntry>);}
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 446 "sintax.y"
+#line 457 "sintax.y"
     {
 		 tempStr.IDstr=(yyvsp[(3) - (5)].sval);
 		 tempStr.tipoVar=(yyvsp[(5) - (5)].ival);
@@ -1980,7 +1991,7 @@ yyreduce:
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 452 "sintax.y"
+#line 463 "sintax.y"
     {
 
 		 tempStr.IDstr=(yyvsp[(1) - (3)].sval);
@@ -1992,7 +2003,7 @@ yyreduce:
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 467 "sintax.y"
+#line 478 "sintax.y"
     {
 			if (!saveVars((yyvsp[(4) - (6)].ival)))
 			exit (-1);
@@ -2002,7 +2013,7 @@ yyreduce:
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 473 "sintax.y"
+#line 484 "sintax.y"
     {
 			if (!saveVars((yyvsp[(3) - (5)].ival)))
 			exit (-1);
@@ -2012,7 +2023,7 @@ yyreduce:
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 481 "sintax.y"
+#line 492 "sintax.y"
     {
 		IDQueue.enqueue((yyvsp[(3) - (3)].sval));
 		
@@ -2022,7 +2033,7 @@ yyreduce:
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 486 "sintax.y"
+#line 497 "sintax.y"
     {
 		IDQueue.enqueue((yyvsp[(1) - (1)].sval));
 	}
@@ -2031,52 +2042,52 @@ yyreduce:
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 492 "sintax.y"
+#line 503 "sintax.y"
     {(yyval.ival)=2;}
     break;
 
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 493 "sintax.y"
+#line 504 "sintax.y"
     {(yyval.ival)=3;}
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 494 "sintax.y"
+#line 505 "sintax.y"
     {(yyval.ival)=1;}
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 495 "sintax.y"
+#line 506 "sintax.y"
     {(yyval.ival)=0;}
     break;
 
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 496 "sintax.y"
+#line 507 "sintax.y"
     {(yyval.ival)=4;}
     break;
 
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 586 "sintax.y"
+#line 597 "sintax.y"
     {
 		pilaOper.push('+');
-		cout<<"Se encuentra +"<<endl;
+		
 	}
     break;
 
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 592 "sintax.y"
+#line 603 "sintax.y"
     {
 		generaExpresion();
 	 }
@@ -2085,7 +2096,7 @@ yyreduce:
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 596 "sintax.y"
+#line 607 "sintax.y"
     {
 		pilaOper.push('-');
 	}
@@ -2094,7 +2105,7 @@ yyreduce:
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 600 "sintax.y"
+#line 611 "sintax.y"
     {
 		generaExpresion();
 	 }
@@ -2103,7 +2114,7 @@ yyreduce:
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 610 "sintax.y"
+#line 621 "sintax.y"
     {
 		pilaOper.push('*');
 	}
@@ -2112,7 +2123,7 @@ yyreduce:
   case 67:
 
 /* Line 1806 of yacc.c  */
-#line 614 "sintax.y"
+#line 625 "sintax.y"
     {
 		generaExpresion();
 	}
@@ -2121,7 +2132,7 @@ yyreduce:
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 618 "sintax.y"
+#line 629 "sintax.y"
     {
 	pilaOper.push('/');
 	}
@@ -2130,7 +2141,7 @@ yyreduce:
   case 69:
 
 /* Line 1806 of yacc.c  */
-#line 622 "sintax.y"
+#line 633 "sintax.y"
     {
 	generaExpresion();
 	 }
@@ -2139,51 +2150,56 @@ yyreduce:
   case 74:
 
 /* Line 1806 of yacc.c  */
-#line 634 "sintax.y"
-    {(yyval.ival)=buscaID((yyvsp[(1) - (1)].sval));	
+#line 645 "sintax.y"
+    {
+		int tipo;
+		tipo=buscaID((yyvsp[(1) - (1)].sval));
+		(yyval.ival)=tipo;	
+		cout<<"Variable: "<<(yyvsp[(1) - (1)].sval)<<"\tTipo:"<<tipo<<endl;
 		pilaO.push((yyvsp[(1) - (1)].sval));
+
 	}
     break;
 
   case 75:
 
 /* Line 1806 of yacc.c  */
-#line 637 "sintax.y"
+#line 653 "sintax.y"
     {(yyval.ival)=2;}
     break;
 
   case 76:
 
 /* Line 1806 of yacc.c  */
-#line 638 "sintax.y"
+#line 654 "sintax.y"
     {(yyval.ival)=3;}
     break;
 
   case 77:
 
 /* Line 1806 of yacc.c  */
-#line 639 "sintax.y"
+#line 655 "sintax.y"
     {(yyval.ival)=1;}
     break;
 
   case 78:
 
 /* Line 1806 of yacc.c  */
-#line 640 "sintax.y"
+#line 656 "sintax.y"
     {(yyval.ival)=0;}
     break;
 
   case 79:
 
 /* Line 1806 of yacc.c  */
-#line 641 "sintax.y"
+#line 657 "sintax.y"
     {(yyval.ival)=4;}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 2187 "sintax.tab.c"
+#line 2203 "sintax.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2414,7 +2430,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 648 "sintax.y"
+#line 664 "sintax.y"
 
 
 main() {

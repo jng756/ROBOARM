@@ -1,13 +1,19 @@
 program x;
-var yes,z : int;
-i,l: int;
-function suma(op1:int, op2:int) : int
-	var resul:int;
-	
-{
-	resultado=op1+op2*op3;
-	ret resultado
-};
+var y,z : int;
+x,u: float;
+
 begin
 
+if (y > x)
+{
+y = 5;
+x = 20.1E+3;
+}
+else 
+{
+z=(10-6)*x;
+}
+rotateTool(z);
+rotateElbow(180);
+print ("Hello World", x);
 end

@@ -71,7 +71,7 @@ Queue<IDs> IDstruct;
 
 //Stacks para expresiones
 Stack<string> pilaO;
-Stack<int> tipo;
+Stack<int> Ptipos;
 Stack<char> pilaOper;
 
 //Declaracion de archivo de cuadruplos
@@ -182,6 +182,8 @@ int buscaID(string IDstr)
 				cout<<"Variable no definida"<<endl;
 				return -1;
 			}
+//Direcciones Globales
+
 if 	(dirVirtual<MEMSIZEARRAYDATA)
 	return 0;
 else if (dirVirtual>MEMSIZEARRAYDATA*1-1 && dirVirtual<MEMSIZEARRAYDATA*2)
@@ -192,11 +194,20 @@ else if (dirVirtual>MEMSIZEARRAYDATA*3-1 && dirVirtual<MEMSIZEARRAYDATA*4)
 	return 3;
 else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
 	return 4;
-else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
-	return 5;
 
+//Direcciones locales
 
-	return 1;	
+else if (dirVirtual>offLocal && dirVirtual<offLocal+MEMSIZEARRAYDATA)
+	return 0;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*1-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*2)
+	return 1;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*2-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*3)
+	return 2;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*3-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*4)
+	return 3;
+else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*4-1 && dirVirtual<offLocal+MEMSIZEARRAYDATA*5)
+	return 4;
+
 } 
 
 string decodificaTipo(int tipo)
@@ -276,7 +287,7 @@ void generaExpresion()
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 	 			cout<<"resultado: "<<resultado<<endl;
-	 			cout<<"resultado: "<<resultado;
+	 	
 	 			pilaO.push(resultado);
 	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
@@ -398,7 +409,7 @@ functions:
 				cout<<"Funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<$7<<endl;
 			}
 
-			myQuadStructure<<"function \t" <<$2<<" \t" <<decodificaTipo($7)<<endl;
+			myQuadStructure<<"Funcion \t" <<$2<<" \t" <<decodificaTipo($7)<<endl;
 
 
 
@@ -431,7 +442,7 @@ functions:
 			}
 		else
 			{
-			cout<<"Se agrega la funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
+			cout<<"Funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
 			}
 		}
 		 vars bloque_func2 ';' endl 
@@ -585,7 +596,7 @@ exp:
 	| exp '+'
 	{
 		pilaOper.push('+');
-		cout<<"Se encuentra +"<<endl;
+		
 	}
 	 
 	 termino
@@ -631,8 +642,13 @@ factor:
 	;
 
 varcte:
-	ID {$$=buscaID($1);	
+	ID {
+		int tipo;
+		tipo=buscaID($1);
+		$$=tipo;	
+		cout<<"Variable: "<<$1<<"\tTipo:"<<tipo<<endl;
 		pilaO.push($1);
+
 	}
 	| CTE_I {$$=2;}
 	| CTE_F {$$=3;}
