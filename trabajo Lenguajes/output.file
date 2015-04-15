@@ -1,0 +1,6 @@
+function 	suma 	int
+pass		op1	int
+pass		op2	int
+end Function
+/	op2	op3	 t1
++	op1	t1	 t2

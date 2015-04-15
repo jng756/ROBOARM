@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <iostream>
 #include <stdbool.h>
+#include <fstream>
+#include <sstream>
 #include "Structures/stack.h"
 #include "Structures/queue.h"
 #include "Structures/Table.h"
@@ -46,6 +48,7 @@ int offLocal=250;
 int contFunctions=0;
 int dirFunctions=500;
 
+int contTemp=1;
 //Espacio para datos
 int MEMSIZEARRAYDATA=50;
 //Variables temporales
@@ -58,6 +61,21 @@ string IDstring;
 varEntry variables=varEntry();
 tableEntry entry=tableEntry();
 table pragma= table();
+
+struct IDs {
+	string IDstr;
+	int tipoVar;
+} tempStr;
+
+Queue<IDs> IDstruct;
+
+//Stacks para expresiones
+Stack<string> pilaO;
+Stack<int> tipo;
+Stack<char> pilaOper;
+
+//Declaracion de archivo de cuadruplos
+ofstream myQuadStructure ("output.file");
 
 
 
@@ -145,6 +163,146 @@ bool saveVars(int tipoVar)
 } 
 
 
+int buscaID(string IDstr)
+{
+
+	int dirVirtual;
+	if (localFlag)
+	{
+		if (!entry.searchVarTable(IDstr,dirVirtual))
+			if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
+			{
+				cout<<"Variable no definida"<<endl;
+				return -1;
+			}
+	}
+	else 
+	if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
+			{
+				cout<<"Variable no definida"<<endl;
+				return -1;
+			}
+if 	(dirVirtual<MEMSIZEARRAYDATA)
+	return 0;
+else if (dirVirtual>MEMSIZEARRAYDATA*1-1 && dirVirtual<MEMSIZEARRAYDATA*2)
+	return 1;
+else if (dirVirtual>MEMSIZEARRAYDATA*2-1 && dirVirtual<MEMSIZEARRAYDATA*3)
+	return 2;
+else if (dirVirtual>MEMSIZEARRAYDATA*3-1 && dirVirtual<MEMSIZEARRAYDATA*4)
+	return 3;
+else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
+	return 4;
+else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
+	return 5;
+
+
+	return 1;	
+} 
+
+string decodificaTipo(int tipo)
+{
+	switch(tipo)
+	{
+		case 0:
+		return "char";
+		break;
+		case 1:
+		return "string";
+		break;
+		case 2:
+		return "int";
+		break;
+		case 3:
+		return "float";
+		break;
+		case 4:
+		return "bool";
+	}
+
+}
+
+
+void generaExpresion()
+{
+	 	string operador1="";
+	 	string operador2="";
+	 	string resultado="";
+	 	char tempSimb=' ';
+	 	stringstream ss;
+		
+	 	 if (pilaOper.pop(tempSimb))
+	 	{
+	 		if (tempSimb=='+')
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+	 			cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			ss<<contTemp;
+	 			resultado="t"+ss.str();
+	 			pilaO.push(resultado);
+	 			cout<<"resultado: "<<resultado<<endl;
+	 			myQuadStructure<<"+\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+	 		else if (tempSimb=='-')
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+	 			cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			ss<<contTemp;
+	 			resultado="t"+ss.str();
+	 			pilaO.push(resultado);
+	 			cout<<"resultado: "<<resultado<<endl;
+	 			pilaO.push(resultado);
+	 			myQuadStructure<<"-\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+	 		else if (tempSimb=='*')
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+	 			cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			ss<<contTemp;
+	 			resultado="t"+ss.str();
+	 			pilaO.push(resultado);
+	 			cout<<"resultado: "<<resultado<<endl;
+	 			cout<<"resultado: "<<resultado;
+	 			pilaO.push(resultado);
+	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		else if (tempSimb=='/')
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+	 			cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			ss<<contTemp;
+	 			resultado="t"+ss.str();
+	 			pilaO.push(resultado);
+	 			cout<<"resultado: "<<resultado<<endl;
+	 			myQuadStructure<<"/\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		contTemp++;
+	 	}
+
+}
+
+
 
 %}
 
@@ -207,7 +365,7 @@ bool saveVars(int tipoVar)
 
 //Declaracion de tipos de las expresiones
 %type <ival> tipo
-
+%type <ival> varcte
 %start programa
 
 
@@ -237,11 +395,25 @@ functions:
 			}
 			else
 			{
-				cout<<"Se agrega la funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<$7<<endl;
+				cout<<"Funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<$7<<endl;
 			}
+
+			myQuadStructure<<"function \t" <<$2<<" \t" <<decodificaTipo($7)<<endl;
+
+
+
+			while (IDstruct.dequeue(tempStr))
+			{
+	
+				myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
+			
+			}
+			myQuadStructure<<"end Function"<<endl;
+
 
 	}
 		
+
 		vars bloque_func ';' endl
 
 		{entry.setVarTable(new HashMap<varEntry>);}
@@ -261,7 +433,8 @@ functions:
 			{
 			cout<<"Se agrega la funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
 			}
-		} vars bloque_func2 ';' endl 
+		}
+		 vars bloque_func2 ';' endl 
 
 		{entry.setVarTable(new HashMap<varEntry>);}
 		functions 
@@ -270,7 +443,18 @@ functions:
 
 def_param:
 	def_param ',' ID ':' tipo  
+		{
+		 tempStr.IDstr=$3;
+		 tempStr.tipoVar=$5;
+		IDstruct.enqueue(tempStr);
+		}
 	| ID ':' tipo 
+	{
+
+		 tempStr.IDstr=$1;
+		 tempStr.tipoVar=$3;
+		IDstruct.enqueue(tempStr);
+	}
 	;
 
 vars:
@@ -397,16 +581,47 @@ mas_expr:
 	;
 
 exp:
+	termino 
+	| exp '+'
+	{
+		pilaOper.push('+');
+		cout<<"Se encuentra +"<<endl;
+	}
+	 
+	 termino
+	 {
+		generaExpresion();
+	 }
+	| exp '-' 
+	{
+		pilaOper.push('-');
+	}
 	termino
-	| exp '+' termino
-	| exp '-' termino
+	 {
+		generaExpresion();
+	 }
+	
 	;
 
 
 termino:
 	factor
-	| termino '*' factor
-	| termino '/' factor
+	| termino '*' 
+	{
+		pilaOper.push('*');
+	}
+	factor
+	{
+		generaExpresion();
+	}
+	| termino '/' 
+	{
+	pilaOper.push('/');
+	}
+	factor
+	{
+	generaExpresion();
+	 }
 	;
 factor:
 	'(' expresion ')'
@@ -416,12 +631,14 @@ factor:
 	;
 
 varcte:
-	ID
-	| CTE_I
-	| CTE_F
-	| CTE_STRING
-	| CTE_CHAR
-	| CTE_BOOL
+	ID {$$=buscaID($1);	
+		pilaO.push($1);
+	}
+	| CTE_I {$$=2;}
+	| CTE_F {$$=3;}
+	| CTE_STRING {$$=1;}
+	| CTE_CHAR {$$=0;}
+	| CTE_BOOL {$$=4;}
 	;
 
 endl:
@@ -445,6 +662,8 @@ main() {
 	do {
 		yyparse();
 	} while (!feof(yyin));
+
+	myQuadStructure.close();
 
 }
 

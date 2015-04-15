@@ -5,20 +5,9 @@ function suma(op1:int, op2:int) : int
 	var resul:int;
 	
 {
-	resultado=op1+op2;
+	resultado=op1+op2/op3;
 	ret resultado
 };
 begin
-if (y > x4)
-{
-y = 5;
-z = 20.1E+3;
-}
-else 
-{
-z=(10-6)*x;
-}
-rotateTool(z);
-rotateElbow(180);
-print ("Hello World", x+3);
+
 end
