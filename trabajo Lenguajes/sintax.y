@@ -16,38 +16,7 @@ extern "C" FILE *yyin;
 extern int line_num;
 void yyerror(const char *s);
 
-
-//Direcciones Virtuales
-//char Global
-int CHARG=0;
-//string Global
-int STRINGG=0;
-//int Global 
-int INTG=0;
-//float Global
-int FLOATG=0;
-//bool Global
-int BOOLG=0;
-
-//char Local
-int CHARL=0;
-//string Local
-int STRINGL=0;
-//int Local 
-int INTL=0;
-//float Global
-int FLOATL=0;
-//bool Global
-int BOOLL=0;
-
-//offset Local
-int offLocal=250;
-
-
-//contador de funciones
-int contFunctions=0;
-int dirFunctions=500;
-
+//Contador de temporales
 int contTemp=1;
 //Espacio para datos
 int MEMSIZEARRAYDATA=50;
@@ -69,146 +38,132 @@ struct IDs {
 
 Queue<IDs> IDstruct;
 
+
+//string de parametros
+string parametros="";
+
+//Tipo de Funcion
+int tipoFunction;
+
 //Stacks para expresiones
 Stack<string> pilaO;
-Stack<int> Ptipos;
+Stack<int> pTipos;
 Stack<char> pilaOper;
 
 //Declaracion de archivo de cuadruplos
 ofstream myQuadStructure ("output.file");
 
+//Funciones
+bool guardaVars(int tipoVar);
+bool guardaParametros(string IDstr, int tipoParam);
+void guardaFuncion(int n, string nombre, int tipo, string params);
+string itos(int i);// convert int to string
+string decodificaTipo(int tipo); //tipo to string (0=char,1=string,2=int, 3=float, 4=bool)
+int buscaID(string IDstr);
+int buscaFuncion(string IDstr, string &params);
+void generaExpresion();
 
-
-bool saveVars(int tipoVar)
+bool guardaVars(int tipoVar)
 {
 	if (localFlag)
 		{
 		while(IDQueue.dequeue(IDstring))
-		{
-			
-			variables.setNombreVar(IDstring);
-			switch(tipoVar)
 			{
-				case 0: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + CHARL+offLocal);
-				CHARL++;
-				//Añadir a memoria
-				//Generar el cuadruplo
-				break;
-				case 1: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + STRINGL+offLocal);
-				STRINGL++;
-				//Añadir a memoria
-				break;
-				case 2: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + INTL+offLocal);
-				INTL++;
-				cout<<"Variable: "<<IDstring <<" 	Direccion: "<<tipoVar*MEMSIZEARRAYDATA + INTL+offLocal<<endl;
-				//Añadir a memoria
-				break;
-				case 3: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + FLOATL+offLocal);
-				FLOATL++;
-				//Añadir a memoria
-				break;
-				case 4: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA+BOOLL+offLocal);
-				BOOLL++;
-				//Añadir a memoria
-				break;
-			}
+				variables.setNombreVar(IDstring);
+				variables.setDirVirtual(tipoVar);
+
+				cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
+				//Generar Cuadruplo
+			
 			if(!entry.addVarTable(variables))
 				{
-				cout << "Redeclaration Variable on line: " << line_num << endl;
+				
 				return false;
 				}
 
+			}
 		}
-	}
 		else
 		{
+			cout<<"Variables Globales"<<endl;
 			while(IDQueue.dequeue(IDstring))
 			{
 				
 				variables.setNombreVar(IDstring);
-				switch(tipoVar)
-				{
-					case 0: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + CHARG);
-					CHARG++;
-					//Añadir a memoria
+				 variables.setDirVirtual(tipoVar);
+					cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
 					//Generar el cuadruplo
-					break;
-					case 1: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + STRINGG);
-					STRINGG++;
-					//Añadir a memoria
-					break;
-					case 2: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + INTG);
-					INTG++;
-					cout<<"Variable: "<<IDstring <<" 	Direccion: "<<(tipoVar*MEMSIZEARRAYDATA+INTG)<<endl;
-					//Añadir a memoria
-					break;
-					case 3: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA + FLOATG);
-					FLOATG++;
-					//Añadir a memoria
-					break;
-					case 4: variables.setDirVirtual(tipoVar*MEMSIZEARRAYDATA+BOOLG);
-					BOOLG++;
-					//Añadir a memoria
-					break;
+					
+				
+					if(!pragma.addGlobalVarTable(variables))
+				{
+					return false;
 				}
-				if(!pragma.addGlobalVarTable(variables))
-			{
-				cout << "Redeclaration Variable on line: " << line_num << endl;
-				return false;
 			}
 		}
-	}
 
 			return true;	
 } 
+
+bool guardaParametros(string IDstr, int tipoParam)
+{
+	//Registrar los parametros de la funcion
+		parametros+=itos(tipoParam);
+
+		//Guardar los parametros como variables de la funcion 
+		variables.setNombreVar(IDstr);
+		variables.setDirVirtual(tipoParam);
+				cout<<"Parametro (Variable): "<<IDstr <<" 	tipoVar: "<<tipoParam<<endl;
+			
+			if(!entry.addVarTable(variables))
+				{
+					cout<<"Redeclaracion de parametro"<<endl;
+					return false;
+				}
+
+		//Guardar la lista de parametros en una lista para que al terminar la funcion generar los cuadruplos
+		tempStr.IDstr=IDstr;
+		tempStr.tipoVar=tipoParam;
+		IDstruct.enqueue(tempStr);
+
+		return true;
+}
+
 
 
 int buscaID(string IDstr)
 {
 
-	int dirVirtual;
+	int dirVirtual=-1;
 	if (localFlag)
 	{
 		if (!entry.searchVarTable(IDstr,dirVirtual))
 			if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
 			{
-				cout<<"Variable no definida"<<endl;
 				return -1;
 			}
 	}
 	else 
+	{
+
 	if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
 			{
-				cout<<"Variable no definida"<<endl;
+			
 				return -1;
 			}
-//Direcciones Globales
+	}	
+return dirVirtual;
+}
 
-if 	(dirVirtual<MEMSIZEARRAYDATA)
-	return 0;
-else if (dirVirtual>MEMSIZEARRAYDATA*1-1 && dirVirtual<MEMSIZEARRAYDATA*2)
-	return 1;
-else if (dirVirtual>MEMSIZEARRAYDATA*2-1 && dirVirtual<MEMSIZEARRAYDATA*3)
-	return 2;
-else if (dirVirtual>MEMSIZEARRAYDATA*3-1 && dirVirtual<MEMSIZEARRAYDATA*4)
-	return 3;
-else if (dirVirtual>MEMSIZEARRAYDATA*4-1 && dirVirtual<MEMSIZEARRAYDATA*5)
-	return 4;
-
-//Direcciones locales
-
-else if (dirVirtual>offLocal && dirVirtual<offLocal+MEMSIZEARRAYDATA)
-	return 0;
-else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*1-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*2)
-	return 1;
-else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*2-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*3)
-	return 2;
-else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*3-1 && dirVirtual<offLocal+ MEMSIZEARRAYDATA*4)
-	return 3;
-else if (dirVirtual>offLocal+MEMSIZEARRAYDATA*4-1 && dirVirtual<offLocal+MEMSIZEARRAYDATA*5)
-	return 4;
-
-} 
+int buscaFuncion(string IDstr, string &params) 
+{
+		int tipoVar=-1;
+	if (!pragma.tableSearchEntry(IDstr,tipoVar, params))
+			{
+				return -1;
+			}
+	return tipoVar;
+}
 
 string decodificaTipo(int tipo)
 {
@@ -235,13 +190,16 @@ string decodificaTipo(int tipo)
 
 void generaExpresion()
 {
+		int tipo1;
+		int tipo2;
+		int tipoRes;
 	 	string operador1="";
 	 	string operador2="";
 	 	string resultado="";
 	 	char tempSimb=' ';
 	 	stringstream ss;
 		
-	 	 if (pilaOper.pop(tempSimb))
+	 	if (pilaOper.pop(tempSimb))
 	 	{
 	 		if (tempSimb=='+')
 	 		{
@@ -249,13 +207,26 @@ void generaExpresion()
 	 				operador1="";
 	 			if (!pilaO.pop(operador1))
 	 				operador2="";
-	 			cout<<"simbolo:"<<tempSimb<<endl;
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
-	 			cout<<"resultado: "<<resultado<<endl;
+
+		 		tipoRes=cubo(tipo1,tipo2,0);
+		 		if (tipoRes==-1)
+		 			cout<<"operacion Invalida"<<endl;
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"+\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
 	 		else if (tempSimb=='-')
@@ -264,14 +235,26 @@ void generaExpresion()
 	 				operador1="";
 	 			if (!pilaO.pop(operador1))
 	 				operador2="";
-	 			cout<<"simbolo:"<<tempSimb<<endl;
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
-	 			cout<<"resultado: "<<resultado<<endl;
-	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,1);
+		 		if (tipoRes==-1)
+		 			cout<<"operacion Invalida"<<endl;
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"-\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
 	 		else if (tempSimb=='*')
@@ -280,15 +263,26 @@ void generaExpresion()
 	 				operador1="";
 	 			if (!pilaO.pop(operador1))
 	 				operador2="";
-	 			cout<<"simbolo:"<<tempSimb<<endl;
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
-	 			cout<<"resultado: "<<resultado<<endl;
-	 	
-	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,2);
+		 		if (tipoRes==-1)
+		 			cout<<"operacion Invalida"<<endl;
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
 
@@ -298,13 +292,26 @@ void generaExpresion()
 	 				operador1="";
 	 			if (!pilaO.pop(operador1))
 	 				operador2="";
-	 			cout<<"simbolo:"<<tempSimb<<endl;
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
-	 			cout<<"resultado: "<<resultado<<endl;
+
+		 		tipoRes=cubo(tipo1,tipo2,3);
+		 		if (tipoRes==-1)
+		 			cout<<"operacion Invalida"<<endl;
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"/\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 	 		}
 
@@ -313,6 +320,72 @@ void generaExpresion()
 
 }
 
+
+string itos(int i) // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
+
+void guardaFuncion(int n, string nombre, int tipo, string params)
+{
+
+	if (n==1)
+	{
+			entry.setNombre(nombre);
+			entry.setDirVirtual(tipo);
+			entry.setParams(params);
+
+				if (!pragma.tableAddEntry(entry))
+				{
+					cout<<"No se pudo agregar: "<< nombre <<endl;
+				}
+				else
+				{
+					cout<<"Funcion: "<< nombre<<"\t Tipo:" <<tipo<<endl;
+				}
+
+				myQuadStructure<<"Funcion: \t" <<nombre<<" \t" <<decodificaTipo(tipo)<<endl;
+
+
+
+				while (IDstruct.dequeue(tempStr))
+				{
+		
+					myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
+				
+				}
+				myQuadStructure<<"end Function"<<endl;
+	}
+	else if (n==2)
+	{
+
+			entry.setNombre(nombre);
+			entry.setDirVirtual(tipo); 
+			entry.setParams(params);
+			if (!pragma.tableAddEntry(entry))
+				{
+					cout<<"No se pudo agregar: "<< nombre <<endl;
+				}
+			else
+				{
+				cout<<"Funcion: "<< nombre<<" Tipo: void"<<endl;
+				}
+			
+			myQuadStructure<<"Funcion \t" <<nombre <<" \t" <<"void"<<endl;
+				while (IDstruct.dequeue(tempStr))
+				{
+					myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
+				}
+				myQuadStructure<<"end Function"<<endl;
+
+		
+	}
+
+
+
+}
 
 
 %}
@@ -368,15 +441,14 @@ void generaExpresion()
 
 // define the "terminal symbol" token types I'm going to use (in CAPS
 // by convention), and associate each with a field of the union:
-%token <ival> CTE_I
-%token <fval> CTE_F
+%token <sval> CTE_I
+%token <sval> CTE_F
 %token <sval> CTE_STRING
-%token <cval> CTE_CHAR
-%token <bval> CTE_BOOL
+%token <sval> CTE_CHAR
+%token <sval> CTE_BOOL
 
 //Declaracion de tipos de las expresiones
 %type <ival> tipo
-%type <ival> varcte
 %start programa
 
 
@@ -390,81 +462,65 @@ programa:
 	';' endl vars functions  {
 		localFlag=false;
 	}
-	coding {  cout << "Fin del analisis del programa " << endl; }
+
+	coding 
+	{  cout << "Fin del analisis del programa " << endl; }
 	;
 
 functions:
 	FUNCTION ID '(' def_param ')' ':' tipo endl 
-	{
-		localFlag=true;
-		entry.setNombre($2);
-		entry.setDirVirtual(dirFunctions+contFunctions);
-		contFunctions++;
-			if (!pragma.tableAddEntry(entry))
-			{
-				cout<<"No se pudo agregar: "<< $2 <<endl;
-			}
-			else
-			{
-				cout<<"Funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo:" <<$7<<endl;
-			}
-
-			myQuadStructure<<"Funcion \t" <<$2<<" \t" <<decodificaTipo($7)<<endl;
-
-
-
-			while (IDstruct.dequeue(tempStr))
-			{
-	
-				myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
-			
-			}
-			myQuadStructure<<"end Function"<<endl;
-
-
-	}
-		
-
+		{
+			localFlag=true;
+			guardaFuncion(1,$2,$7, parametros);
+			tipoFunction=$7;
+		}
 		vars bloque_func ';' endl
 
-		{entry.setVarTable(new HashMap<varEntry>);}
+		{	
+			//vaciar la estructura de variables para iniciar una nueva funcion
+			entry.setVarTable(new HashMap<varEntry>);
+			//Vaciar params
+			parametros="";
+		}
 
 		 functions 
 	
 	| FUNCTION ID '(' def_param ')' ':' VOID endl {
 		localFlag=true;
-		entry.setNombre($2);
-		entry.setDirVirtual(dirFunctions+contFunctions);
-		contFunctions++;
-		if (!pragma.tableAddEntry(entry))
-			{
-				cout<<"No se pudo agregar: "<< $2 <<endl;
-			}
-		else
-			{
-			cout<<"Funcion: "<< $2<<" Direccion: "<<dirFunctions+contFunctions<<"	Tipo: void"<<endl;
-			}
+		guardaFuncion(2,$2,5, parametros);
+		tipoFunction=5;
 		}
 		 vars bloque_func2 ';' endl 
 
-		{entry.setVarTable(new HashMap<varEntry>);}
+		{	
+			//vaciar la estructura de variables para iniciar una nueva funcion
+			entry.setVarTable(new HashMap<varEntry>);
+			//Vaciar params
+			parametros="";
+		}
 		functions 
 	|
 	;
 
+
 def_param:
 	def_param ',' ID ':' tipo  
 		{
-		 tempStr.IDstr=$3;
-		 tempStr.tipoVar=$5;
-		IDstruct.enqueue(tempStr);
+
+		if (!guardaParametros($3,$5))
+			{
+				exit(-1);
+			}
+		
+		
 		}
 	| ID ':' tipo 
 	{
+		if (!guardaParametros($1,$3))
+			{
+				exit(-1);
 
-		 tempStr.IDstr=$1;
-		 tempStr.tipoVar=$3;
-		IDstruct.enqueue(tempStr);
+			}
 	}
 	;
 
@@ -476,14 +532,21 @@ vars:
 def_vars:
 	def_vars def_id ':' tipo ';' endl 
 		{
-			if (!saveVars($4))
+
+			if (!guardaVars($4))
+			{
+				cout << "Redeclaration Variable on line: " << line_num << endl;
 			exit (-1);
+			}
 		}
 
 	| def_id ':' tipo ';' endl  
 		{
-			if (!saveVars($3))
+			if (!guardaVars($3))
+			{
+				cout << "Redeclaration Variable on line: " << line_num << endl;
 			exit (-1);
+			}
 		}
 	;
 
@@ -515,7 +578,31 @@ bloque:
 	'{' endl def_estatuto '}' endl 
 	;
 bloque_func:
-	'{' endl def_estatuto TRET expresion endl '}' endl
+	'{' endl 
+	def_estatuto
+	TRET 
+	expresion 
+	{
+		int tipof;
+		string operador;
+		if (!pTipos.pop(tipof))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+
+		if (tipoFunction!=tipof)
+		{
+			cout<<"Expresion no compatible"<<endl;
+			exit(-1);
+		}
+
+	}
+
+	endl '}' endl
 	;
 bloque_func2:
 	'{' endl def_estatuto '}' endl
@@ -534,6 +621,7 @@ estatuto:
 	| ciclo
 	| lectura 
 	| especial  // added
+	| llamadas  // added
 	;
 
 asignacion:
@@ -567,6 +655,37 @@ especial:
 	| ROTATEWRISTM '(' varcte ')' ';' endl
 	| ROTATEWRISTR '(' varcte ')' ';' endl
 	| ROTATETOOL '(' varcte ')' ';' endl
+	;
+
+llamadas:  
+	//Solo las funciones de tipo 5
+	ID '(' params ')' ';' endl
+	{
+		{
+			int tipo=-1;
+			string params="";
+			tipo=buscaFuncion($1, params);
+			cout<<"Funcion: "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
+				if (tipo == -1)
+				{
+					cout<<"Function not defined on line:"<<line_num<<endl;
+					exit(-1);
+				}
+				if (tipo != 5)
+				{
+					cout<<"Function not void:"<<line_num<<endl;
+					exit(-1);
+				} 
+
+				cout<<"Parametros Leidos:"<<parametros<< endl;		
+				if (parametros!=params)
+				{
+					cout<<"Parametros no coinciden"<<endl;
+					exit(-1);
+				}
+		}
+	}
+
 	;
 
 def_else:
@@ -631,7 +750,7 @@ termino:
 	}
 	factor
 	{
-	generaExpresion();
+		generaExpresion();
 	 }
 	;
 factor:
@@ -642,19 +761,99 @@ factor:
 	;
 
 varcte:
-	ID {
+	ID '(' params ')'
+		{
+		int tipo=-1;
+		string params="";
+		tipo=buscaFuncion($1, params);
+		cout<<"Funcion: "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
+			if (tipo == -1)
+			{
+				cout<<"Function not defined on line:"<<line_num<<endl;
+				exit(-1);
+			}
+			if (tipo == 5)
+			{
+				cout<<"Function void declared as an asignation:"<<line_num<<endl;
+				exit(-1);
+			} 
+
+			cout<<"Parametros Leidos:"<<parametros<< endl;		
+			if (parametros!=params)
+			{
+				cout<<"Parametros no coinciden"<<endl;
+				exit(-1);
+			}
+
+		pTipos.push(tipo);
+		pilaO.push($1);
+		}
+
+	|ID 
+	{
 		int tipo;
 		tipo=buscaID($1);
-		$$=tipo;	
-		cout<<"Variable: "<<$1<<"\tTipo:"<<tipo<<endl;
+		cout<<"Variable read: "<<$1<<"\tTipo:"<<tipo<<endl;
+		if (tipo == -1)
+		{
+			cout<<"Variable not defined on line:"<<line_num<<endl;
+			exit(-1);
+		}
+		pTipos.push(tipo);
 		pilaO.push($1);
+	}
+	| CTE_I {
+
+		pilaO.push($1);
+		pTipos.push(2);
+		}
+	| CTE_F {
+
+		pilaO.push($1);
+		pTipos.push(3);
+
+		}
+	| CTE_STRING {
+
+		pilaO.push($1);
+		pTipos.push(1);
+		
+		}
+	| CTE_CHAR {
+		pilaO.push($1);
+		pTipos.push(0);
 
 	}
-	| CTE_I {$$=2;}
-	| CTE_F {$$=3;}
-	| CTE_STRING {$$=1;}
-	| CTE_CHAR {$$=0;}
-	| CTE_BOOL {$$=4;}
+	| CTE_BOOL {
+		pilaO.push($1);
+		pTipos.push(4);
+	}
+	;
+
+	params:
+	params ',' exp
+	{	int tipoExp;
+		if (!pTipos.pop(tipoExp))
+		{
+			cout<<"No hay expresion"<<endl;
+			exit(-1);
+		}
+
+			parametros+=itos(tipoExp);
+	}
+	| exp
+	{
+		int tipoExp;
+		if (!pTipos.pop(tipoExp))
+		{
+			cout<<"No hay expresion"<<endl;
+			exit(-1);
+		}
+
+			parametros+=itos(tipoExp);
+
+	}
+	|
 	;
 
 endl:

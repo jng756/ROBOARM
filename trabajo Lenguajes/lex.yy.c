@@ -988,12 +988,12 @@ YY_RULE_SETUP
 case 31:
 YY_RULE_SETUP
 #line 47 "lex.l"
-{ yylval.ival = atoi(yytext); return CTE_I; }
+{ yylval.sval = strdup(yytext); return CTE_I; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 49 "lex.l"
-{ yylval.fval = atof(yytext); return CTE_F; }
+{ yylval.sval = strdup(yytext); return CTE_F; }
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
@@ -1004,7 +1004,7 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 53 "lex.l"
-{ yylval.cval = yytext[1];	return CTE_CHAR;}
+{ yylval.sval = strdup(yytext);	return CTE_CHAR;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP

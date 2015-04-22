@@ -44,13 +44,13 @@ rotateTool	{ return ROTATETOOL;}
 		
 [a-zA-Z][a-zA-Z0-9_]* {yylval.sval = strdup(yytext); return ID; }
 
-[0-9]+         { yylval.ival = atoi(yytext); return CTE_I; }
+[0-9]+         { yylval.sval = strdup(yytext); return CTE_I; }
 
-[0-9]+\.[0-9]+(("E"|"e")("+"|"-")?[0-9]+)? 	{ yylval.fval = atof(yytext); return CTE_F; }
+[0-9]+\.[0-9]+(("E"|"e")("+"|"-")?[0-9]+)? 	{ yylval.sval = strdup(yytext); return CTE_F; }
 
 \"[[:alnum:][:digit:][:space:]]*\"   { yylval.sval = strdup(yytext);	return CTE_STRING;}
 
-'[a-zA-Z0-9]'   { yylval.cval = yytext[1];	return CTE_CHAR;}
+'[a-zA-Z0-9]'   { yylval.sval = strdup(yytext);	return CTE_CHAR;}
 
 
 

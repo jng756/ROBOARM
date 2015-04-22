@@ -24,6 +24,7 @@ public:
       {
     	  this->nombreVar = "";
     	  this->dirVirtual= 0;
+
       }
       varEntry(string nombreV, int dirVirtual) {
             this->nombreVar = nombreV;
@@ -52,6 +53,7 @@ class tableEntry {
 
 private:
       string nombre;
+      string params;
       int dirVirtual;
       HashMap<varEntry> *varTable;
 
@@ -62,27 +64,35 @@ public:
                         this->dirVirtual = 0;
                         HashMap<varEntry>* map= new HashMap<varEntry>;
                         this->varTable = map;
+                        this->params ="";
                   }
 
        ~tableEntry() {
       	}
 
 
-      tableEntry(string nombreV, int dirVirtual) {
+      tableEntry(string nombreV, int dirVirtual, string params) {
                   this->nombre = nombreV;
                   this->dirVirtual = dirVirtual;
                   HashMap<varEntry>* map= new HashMap<varEntry>;
                   this->varTable = map;
+                  this->params=params;
             }
 
 		string getNombre() {
 			return nombre;
 		}
 
+		string getParams(){
+			return params;
+		}
 		void setNombre(string nombre) {
 			this->nombre = nombre;
 		}
 
+		void setParams(string params){
+			this->params = params;
+		}
 		int getDirVirtual() const {
 			return dirVirtual;
 		}
@@ -106,9 +116,10 @@ public:
 			string nombreVar= entry.getNombreVar();
 			int k=0;  //La funcion de hash es la suma de los caracteres del string
 			//HASH FUNCTION
-			for (unsigned int i = 0; i < nombre.length(); i++)
-			            k = k + int(nombreVar[k]);
-
+			for (unsigned int i = 0; i < nombreVar.length(); i++)
+			            {
+			            	k = k + int(nombreVar[i]);
+						}
 			//Buscar la variable; si ya tiene esta ocupada esa llave hay que encadenarla a esa misma sumando el tamaño de la tabla
 			while(varTable->search(k,entrySearch))
 			{
@@ -133,7 +144,7 @@ public:
 					int k=0;
 					//HASH FUNCTION
 					for (unsigned int i = 0; i < nombreVar.length(); i++)
-					            k = k + int(nombreVar[k]);
+					            k = k + int(nombreVar[i]);
 
 				//Ademas regresar la direccion virtual de la variable
 
@@ -155,6 +166,7 @@ public:
 class table {
 private:
     string nombre;
+
     HashMap<varEntry> *varTableGlobal;
 	HashMap<tableEntry> *map;
 public:
@@ -210,8 +222,8 @@ public:
 				string nombreVar= entry.getNombreVar();
 				int k=0;  //La funcion de hash es la suma de los caracteres del string
 				//HASH FUNCTION
-				for (unsigned int i = 0; i < nombre.length(); i++)
-				            k = k + int(nombreVar[k]);
+				for (unsigned int i = 0; i < nombreVar.length(); i++)
+				            k = k + int(nombreVar[i]);
 
 				//Buscar la variable; si ya tiene esta ocupada esa llave hay que encadenarla a esa misma sumando el tamaño de la tabla
 				while(varTableGlobal->search(k,entrySearch))
@@ -236,7 +248,7 @@ public:
 						int k=0;
 						//HASH FUNCTION
 						for (unsigned int i = 0; i < nombreVar.length(); i++)
-						            k = k + int(nombreVar[k]);
+						            k = k + int(nombreVar[i]);
 
 					//Ademas regresar la direccion virtual de la variable
 
@@ -262,7 +274,7 @@ public:
 				//HASH FUNCTION
 				for (unsigned int i = 0; i < nombre.length(); i++)
 				{
-					k = k + int(nombre[k]);
+					k = k + int(nombre[i]);
 				}
 
 				//Buscar la variable; si se encuentra cambiar la llave; probar con otra llave
@@ -282,23 +294,22 @@ public:
 
 			}
 
-	bool tableSearchEntry(string nombre, int &dirVirtual)
+	bool tableSearchEntry(string nombre, int &dirVirtual, string &params)
 	 {
 			tableEntry entrySearch;
 					//Buscar la llave
 						int k=0;
 						//HASH FUNCTION
 						for (unsigned int i = 0; i < nombre.length(); i++)
-						            k = k + int(nombre[k]);
+						            k = k + int(nombre[i]);
 
-					//Regresar el direccion virtual de la variable
-
-
+					//Regresar el direccion virtual de la funcion
 						while(map->search(k,entrySearch))
 						{
 							//si el nombre de la Variable es igual al valor encontrado entonces si esta; sino esta hay que checar con la siguiente llave
 							if (entrySearch.getNombre()==nombre)
 								dirVirtual=entrySearch.getDirVirtual();
+								params=entrySearch.getParams();
 								return true;
 
 							k+=64;
@@ -307,8 +318,6 @@ public:
 						//Declarar error variable no declarada
 						return false;
 		}
-
-
 };
 
 #endif /* TABLE_H_ */

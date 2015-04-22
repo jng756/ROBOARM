@@ -1,8 +1,15 @@
 program x;
-var y,z,t : int;
-x,u: float;
-
+var yes,z : int;
+i,l: int;
+function suma(op1:int, op2:int) : int
+	var resultado:int;
+	
+{
+	resultado=op1+op2;
+	ret resultado
+};
 begin
-z=y+t;
 
+yes=suma(i,l);
 end
+
