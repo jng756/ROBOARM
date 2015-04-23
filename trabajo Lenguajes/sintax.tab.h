@@ -59,18 +59,19 @@
      TRET = 277,
      ID = 278,
      DIFF = 279,
-     ENDL = 280,
-     ROTATEWAIST = 281,
-     ROTATESHOULDER = 282,
-     ROTATEELBOW = 283,
-     ROTATEWRISTM = 284,
-     ROTATEWRISTR = 285,
-     ROTATETOOL = 286,
-     CTE_I = 287,
-     CTE_F = 288,
-     CTE_STRING = 289,
-     CTE_CHAR = 290,
-     CTE_BOOL = 291
+     EQUALS = 280,
+     ENDL = 281,
+     ROTATEWAIST = 282,
+     ROTATESHOULDER = 283,
+     ROTATEELBOW = 284,
+     ROTATEWRISTM = 285,
+     ROTATEWRISTR = 286,
+     ROTATETOOL = 287,
+     CTE_I = 288,
+     CTE_F = 289,
+     CTE_STRING = 290,
+     CTE_CHAR = 291,
+     CTE_BOOL = 292
    };
 #endif
 
@@ -81,7 +82,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 398 "sintax.y"
+#line 402 "sintax.y"
 
 	int ival;
 	float fval;
@@ -92,7 +93,7 @@ typedef union YYSTYPE
 
 
 /* Line 2068 of yacc.c  */
-#line 96 "sintax.tab.h"
+#line 97 "sintax.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

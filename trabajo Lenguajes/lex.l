@@ -70,6 +70,7 @@ rotateTool	{ return ROTATETOOL;}
 ">"			  { return '>';}
 "<"			  { return '<';}
 "<>"		  { return DIFF;}
+"=="		   {return EQUALS;}
 \n            { ++line_num; return ENDL;   }
 .              ;
 %%

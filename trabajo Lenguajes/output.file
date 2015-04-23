@@ -1,5 +1,14 @@
+var	resultado	tipo	int
+var	contador	tipo	int
+var	uno	tipo	int
 Funcion: 	suma 	int
 pass		op1	int
 pass		op2	int
 end Function
+var	resultado	tipo	int
 +	op1	op2	 t1
+=	resultado	t1
+return	resultado
++	4	5	 t2
++	contador	suma(t2,5)	 t3
+=	resultado	t3

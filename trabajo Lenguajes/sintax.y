@@ -38,6 +38,7 @@ struct IDs {
 
 Queue<IDs> IDstruct;
 
+Queue<string> lista_params;
 
 //string de parametros
 string parametros="";
@@ -67,6 +68,7 @@ bool guardaVars(int tipoVar)
 {
 	if (localFlag)
 		{
+		cout<<"Variables Locales"<<endl;
 		while(IDQueue.dequeue(IDstring))
 			{
 				variables.setNombreVar(IDstring);
@@ -74,6 +76,8 @@ bool guardaVars(int tipoVar)
 
 				cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
 				//Generar Cuadruplo
+
+				myQuadStructure<<"var\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;
 			
 			if(!entry.addVarTable(variables))
 				{
@@ -93,7 +97,7 @@ bool guardaVars(int tipoVar)
 				 variables.setDirVirtual(tipoVar);
 					cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
 					//Generar el cuadruplo
-					
+				myQuadStructure<<"var\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;		
 				
 					if(!pragma.addGlobalVarTable(variables))
 				{
@@ -428,6 +432,7 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 
 %token <sval> ID
 %token DIFF
+%token EQUALS
 %token ENDL
 
 %token ROTATEWAIST
@@ -600,6 +605,8 @@ bloque_func:
 			exit(-1);
 		}
 
+		myQuadStructure<<"return\t"<< operador<<endl;
+
 	}
 
 	endl '}' endl
@@ -625,11 +632,47 @@ estatuto:
 	;
 
 asignacion:
-	ID '=' expresion ';' endl
+	ID '=' expresion 
+	{
+		int tipoID;
+		int tipoExp;
+		string operador;
+		tipoID=buscaID($1);
+
+		if (tipoID == -1)
+		{
+			cout<<"Variable not defined on line:"<<line_num<<endl;
+			exit(-1);
+		}
+
+		if (!pTipos.pop(tipoExp))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+		
+		if (tipoID!=tipoExp)
+		{
+			cout<<"Expresion no compatible"<<endl;
+			exit(-1);
+		}
+
+		myQuadStructure<<"=\t"<<$1<<"\t"<<operador<<endl;
+
+	}
+	';' endl
 	;
 
 condicion:
-	IF '(' expresion ')' endl bloque def_else
+	IF '(' expresion ')' 
+	{
+
+
+	}
+	endl bloque def_else
 	;
 
 escritura:
@@ -706,7 +749,7 @@ mas_expr:
 	'>' exp
 	| '<' exp
 	| DIFF exp
-	| '=' exp
+	| EQUALS exp
 	|
 	;
 
@@ -756,8 +799,6 @@ termino:
 factor:
 	'(' expresion ')'
 	| varcte
-	| '+' varcte 
-	| '-' varcte
 	;
 
 varcte:
@@ -765,6 +806,8 @@ varcte:
 		{
 		int tipo=-1;
 		string params="";
+		string variable="";
+		string acum="";
 		tipo=buscaFuncion($1, params);
 		cout<<"Funcion: "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
 			if (tipo == -1)
@@ -785,8 +828,21 @@ varcte:
 				exit(-1);
 			}
 
+
+			variable+=$1;
+			variable+="(";
+			if(lista_params.dequeue(acum))
+				variable+=acum;
+				
+			while(lista_params.dequeue(acum))
+			{
+			 variable+=",";
+			 variable+=acum;
+			}
+			variable+=")";
+
 		pTipos.push(tipo);
-		pilaO.push($1);
+		pilaO.push(variable);
 		}
 
 	|ID 
@@ -833,24 +889,41 @@ varcte:
 	params:
 	params ',' exp
 	{	int tipoExp;
+		string operando;
 		if (!pTipos.pop(tipoExp))
 		{
 			cout<<"No hay expresion"<<endl;
 			exit(-1);
 		}
+		parametros+=itos(tipoExp);
 
-			parametros+=itos(tipoExp);
+		if (!pilaO.pop(operando))
+		{
+			cout<<"No hay operando"<<endl;
+			exit(-1);
+		}
+
+		lista_params.enqueue(operando);
+
 	}
 	| exp
 	{
 		int tipoExp;
+		string operando;
 		if (!pTipos.pop(tipoExp))
 		{
 			cout<<"No hay expresion"<<endl;
 			exit(-1);
 		}
-
 			parametros+=itos(tipoExp);
+
+		if (!pilaO.pop(operando))
+		{
+			cout<<"No hay operando"<<endl;
+			exit(-1);
+		}
+
+		lista_params.enqueue(operando);
 
 	}
 	|
