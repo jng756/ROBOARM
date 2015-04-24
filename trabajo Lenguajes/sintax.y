@@ -80,13 +80,18 @@ string itos(int i);
 string decodificaTipo(int tipo); 
 
 //Busca el ID de una variable segun sea local o global el alojamiento 
+//Regresa el tipo de la variables
 int buscaID(string IDstr);
 
 //Busca una función de la tabla de globales
+//Regresa el tipo de la funcion leida
 int buscaFuncion(string IDstr, string &params);
 
+
+
 //Genera cuadruplos para Expresiones
-void generaExpresion();
+//Regresa el tipo del resultado para una expresion
+int generaExpresion();
 
 bool guardaVars(int tipoVar)
 {
@@ -224,7 +229,7 @@ string decodificaTipo(int tipo)
 }
 
 
-void generaExpresion()
+int generaExpresion()
 {
 		int tipo1;
 		int tipo2;
@@ -253,17 +258,22 @@ void generaExpresion()
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
+	 			contTemp++;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,0);
 		 		if (tipoRes==-1)
-		 			cout<<"operacion Invalida"<<endl;
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
 
 		 		pTipos.push(tipoRes);
 
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"+\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 			return tipoRes;
 	 		}
 	 		else if (tempSimb=='-')
 	 		{
@@ -281,17 +291,23 @@ void generaExpresion()
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
+	 			contTemp++;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,1);
 		 		if (tipoRes==-1)
-		 			cout<<"operacion Invalida"<<endl;
-
+		 			{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
 		 		pTipos.push(tipoRes);
 
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"-\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+
+	 			return tipoRes;
+
 	 		}
 	 		else if (tempSimb=='*')
 	 		{
@@ -309,17 +325,22 @@ void generaExpresion()
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
+	 			contTemp++;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,2);
 		 		if (tipoRes==-1)
-		 			cout<<"operacion Invalida"<<endl;
-
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 				return -1;
+		 		}
 		 		pTipos.push(tipoRes);
 
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+
+	 			return tipoRes;
 	 		}
 
 	 		else if (tempSimb=='/')
@@ -338,17 +359,22 @@ void generaExpresion()
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
 	 			ss<<contTemp;
+	 			contTemp++;
 	 			resultado="t"+ss.str();
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,3);
 		 		if (tipoRes==-1)
-		 			cout<<"operacion Invalida"<<endl;
-
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 				return -1;
+		 		}
 		 		pTipos.push(tipoRes);
 
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"/\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+
+	 			return tipoRes;
 	 		}
 
 	 		contTemp++;
@@ -818,7 +844,8 @@ exp:
 	 
 	 termino
 	 {
-		generaExpresion();
+		if(generaExpresion()==-1)
+			exit(-1);
 	 }
 	| exp '-' 
 	{
@@ -826,7 +853,8 @@ exp:
 	}
 	termino
 	 {
-		generaExpresion();
+		if(generaExpresion()==-1)
+			exit(-1);
 	 }
 	
 	;
@@ -840,7 +868,8 @@ termino:
 	}
 	factor
 	{
-		generaExpresion();
+		if(generaExpresion()==-1)
+			exit(-1);
 	}
 	| termino '/' 
 	{
@@ -848,7 +877,8 @@ termino:
 	}
 	factor
 	{
-		generaExpresion();
+		if(generaExpresion()==-1)
+			exit(-1);
 	 }
 	;
 factor:

@@ -6,11 +6,14 @@ PASS		op1	int
 PASS		op2	int
 ENDFUNCTION
 VAR	resultado	tipo	int
-+	op1	op2	 t1
++	op1	op2	 t2
 =	resultado	t1
 RETURN	resultado
 BEGIN
-+	4	5	 t2
-+	contador	suma(t2,5)	 t3
++	4	5	 t3
++	contador	suma(t2,5)	 t4
 =	resultado	t3
++	3	4	 t5
+*	t4	4	 t6
+=	uno	t5
 END

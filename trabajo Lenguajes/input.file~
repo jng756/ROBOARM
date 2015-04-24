@@ -1,6 +1,8 @@
 program x;
-var resultado, contador : int;
-var uno: int;
+var 
+resultado, contador : int;
+uno : int;
+
 function suma(op1:int, op2:int) : int
 	var resultado:int;
 	
@@ -11,5 +13,6 @@ function suma(op1:int, op2:int) : int
 begin
 
 resultado=contador+suma(4+5,5);
+uno=3+4*4;
 end
 
