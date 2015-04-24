@@ -27,10 +27,14 @@ bool localFlag=false;
 Queue<string> IDQueue;
 string IDstring;
 
+
+//Tablas de variables
 varEntry variables=varEntry();
 tableEntry entry=tableEntry();
 table pragma= table();
 
+
+//Estructura para hacer las definiciones de ID
 struct IDs {
 	string IDstr;
 	int tipoVar;
@@ -38,6 +42,8 @@ struct IDs {
 
 Queue<IDs> IDstruct;
 
+
+//Lista de parametros para las llamadas
 Queue<string> lista_params;
 
 //string de parametros
@@ -55,20 +61,38 @@ Stack<char> pilaOper;
 ofstream myQuadStructure ("output.file");
 
 //Funciones
+
+//Funcion para guardar Variables
 bool guardaVars(int tipoVar);
+
+//Funcion para guardar parametros
 bool guardaParametros(string IDstr, int tipoParam);
+
+//Funcion para guardar funciones
 void guardaFuncion(int n, string nombre, int tipo, string params);
-string itos(int i);// convert int to string
-string decodificaTipo(int tipo); //tipo to string (0=char,1=string,2=int, 3=float, 4=bool)
+
+
+//Función para convertir enteros a string
+string itos(int i);
+
+//Funcion para decodificar el numero del tipo a un string
+//(0=char,1=string,2=int, 3=float, 4=bool)
+string decodificaTipo(int tipo); 
+
+//Busca el ID de una variable segun sea local o global el alojamiento 
 int buscaID(string IDstr);
+
+//Busca una función de la tabla de globales
 int buscaFuncion(string IDstr, string &params);
+
+//Genera cuadruplos para Expresiones
 void generaExpresion();
 
 bool guardaVars(int tipoVar)
 {
 	if (localFlag)
 		{
-		cout<<"Variables Locales"<<endl;
+		cout<<"*****Variables Locales*****"<<endl;
 		while(IDQueue.dequeue(IDstring))
 			{
 				variables.setNombreVar(IDstring);
@@ -76,9 +100,8 @@ bool guardaVars(int tipoVar)
 
 				cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
 				//Generar Cuadruplo
-
-				myQuadStructure<<"var\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;
-			
+				myQuadStructure<<"VAR\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;
+		
 			if(!entry.addVarTable(variables))
 				{
 				
@@ -89,7 +112,7 @@ bool guardaVars(int tipoVar)
 		}
 		else
 		{
-			cout<<"Variables Globales"<<endl;
+			cout<<"*****Variables Globales*****"<<endl;
 			while(IDQueue.dequeue(IDstring))
 			{
 				
@@ -97,7 +120,7 @@ bool guardaVars(int tipoVar)
 				 variables.setDirVirtual(tipoVar);
 					cout<<"Variable: "<<IDstring <<" 	tipoVar: "<<tipoVar<<endl;
 					//Generar el cuadruplo
-				myQuadStructure<<"var\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;		
+				myQuadStructure<<"VAR\t"<<IDstring<<"\ttipo\t"<<decodificaTipo(tipoVar)<<endl;		
 				
 					if(!pragma.addGlobalVarTable(variables))
 				{
@@ -117,8 +140,9 @@ bool guardaParametros(string IDstr, int tipoParam)
 		//Guardar los parametros como variables de la funcion 
 		variables.setNombreVar(IDstr);
 		variables.setDirVirtual(tipoParam);
-				cout<<"Parametro (Variable): "<<IDstr <<" 	tipoVar: "<<tipoParam<<endl;
-			
+				cout<<"*****Parametros*****"<<endl;
+
+				cout<<"Parametro : "<<IDstr <<" 	tipoVar: "<<tipoParam<<endl;
 			if(!entry.addVarTable(variables))
 				{
 					cout<<"Redeclaracion de parametro"<<endl;
@@ -138,36 +162,44 @@ bool guardaParametros(string IDstr, int tipoParam)
 int buscaID(string IDstr)
 {
 
-	int dirVirtual=-1;
+	int tipoID=-1;
 	if (localFlag)
 	{
-		if (!entry.searchVarTable(IDstr,dirVirtual))
-			if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
+		//Busca en la tabla local, luego busca en la tabla de globales	
+		if (!entry.searchVarTable(IDstr,tipoID))
+			if (!pragma.searchVarGlobalTable(IDstr,tipoID))
 			{
 				return -1;
 			}
 	}
 	else 
 	{
-
-	if (!pragma.searchVarGlobalTable(IDstr,dirVirtual))
+		//Busca en la tabla de globales solamente
+	if (!pragma.searchVarGlobalTable(IDstr,tipoID))
 			{
 			
 				return -1;
 			}
 	}	
-return dirVirtual;
+return tipoID;
 }
 
+//Busca la funcion
+//La busca por el IDstring, devuelve el string  de parametros a traves de params
+//Regresa el tipo de la funcion	
 int buscaFuncion(string IDstr, string &params) 
 {
+
 		int tipoVar=-1;
+		//Busca en la tabla la variable
+		//Devuelve el tipo y los parametros
 	if (!pragma.tableSearchEntry(IDstr,tipoVar, params))
 			{
 				return -1;
 			}
 	return tipoVar;
 }
+
 
 string decodificaTipo(int tipo)
 {
@@ -350,17 +382,17 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 					cout<<"Funcion: "<< nombre<<"\t Tipo:" <<tipo<<endl;
 				}
 
-				myQuadStructure<<"Funcion: \t" <<nombre<<" \t" <<decodificaTipo(tipo)<<endl;
+				myQuadStructure<<"FUNCTION \t" <<nombre<<" \t" <<decodificaTipo(tipo)<<endl;
 
 
 
 				while (IDstruct.dequeue(tempStr))
 				{
 		
-					myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
+					myQuadStructure<<"PASS	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
 				
 				}
-				myQuadStructure<<"end Function"<<endl;
+				myQuadStructure<<"ENDFUNCTION"<<endl;
 	}
 	else if (n==2)
 	{
@@ -377,12 +409,12 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 				cout<<"Funcion: "<< nombre<<" Tipo: void"<<endl;
 				}
 			
-			myQuadStructure<<"Funcion \t" <<nombre <<" \t" <<"void"<<endl;
+			myQuadStructure<<"FUNCTION \t" <<nombre <<" \t" <<"void"<<endl;
 				while (IDstruct.dequeue(tempStr))
 				{
 					myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
 				}
-				myQuadStructure<<"end Function"<<endl;
+				myQuadStructure<<"ENDFUNCTION"<<endl;
 
 		
 	}
@@ -576,7 +608,16 @@ tipo:
 	;
 
 coding:
-	TBEGIN endl def_estatuto TEND endl
+	TBEGIN {
+		myQuadStructure<<"BEGIN"<<endl;
+		cout<<"*****Coding Start****"<<endl;
+	}
+		endl def_estatuto TEND 
+		{
+			myQuadStructure<<"END"<<endl;
+			cout<<"****Coding Finish*****"<<endl;
+		}
+			endl
 	;
 
 bloque:
@@ -584,6 +625,9 @@ bloque:
 	;
 bloque_func:
 	'{' endl 
+	{
+		cout<<"****Function  Code****";
+	}
 	def_estatuto
 	TRET 
 	expresion 
@@ -605,14 +649,25 @@ bloque_func:
 			exit(-1);
 		}
 
-		myQuadStructure<<"return\t"<< operador<<endl;
+		myQuadStructure<<"RETURN\t"<< operador<<endl;
 
 	}
 
 	endl '}' endl
 	;
 bloque_func2:
-	'{' endl def_estatuto '}' endl
+	'{' endl 
+	{
+		cout<<"****Function  Code****";
+	}
+		def_estatuto '}'
+	{
+
+
+		cout<<"Return void"<<endl;
+		myQuadStructure<<"RETVOID"<<endl;
+	} 
+	endl
 	;
 
 def_estatuto:
@@ -809,7 +864,7 @@ varcte:
 		string variable="";
 		string acum="";
 		tipo=buscaFuncion($1, params);
-		cout<<"Funcion: "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
+		cout<<"Funcion "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
 			if (tipo == -1)
 			{
 				cout<<"Function not defined on line:"<<line_num<<endl;

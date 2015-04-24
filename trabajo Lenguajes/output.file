@@ -1,14 +1,16 @@
-var	resultado	tipo	int
-var	contador	tipo	int
-var	uno	tipo	int
-Funcion: 	suma 	int
-pass		op1	int
-pass		op2	int
-end Function
-var	resultado	tipo	int
+VAR	resultado	tipo	int
+VAR	contador	tipo	int
+VAR	uno	tipo	int
+FUNCTION 	suma 	int
+PASS		op1	int
+PASS		op2	int
+ENDFUNCTION
+VAR	resultado	tipo	int
 +	op1	op2	 t1
 =	resultado	t1
-return	resultado
+RETURN	resultado
+BEGIN
 +	4	5	 t2
 +	contador	suma(t2,5)	 t3
 =	resultado	t3
+END
