@@ -29,8 +29,8 @@ case		  { return CASE; }
 of	          { return OF; }
 print 		  { return PRINT; }
 read		  { return READ; }
-true 		  { yylval.bval = true ; return CTE_BOOL;}
-false         {yylval.bval = false; return CTE_BOOL;}
+true 		  { yylval.sval=strdup("true") ; return CTE_BOOL;}
+false         { yylval.sval=strdup("false"); return CTE_BOOL;}
 begin		{ return TBEGIN;}
 end		{return TEND;}
 ret 	{return TRET; }
@@ -69,6 +69,8 @@ rotateTool	{ return ROTATETOOL;}
 ":"			  { return ':';}
 ">"			  { return '>';}
 "<"			  { return '<';}
+"<="		  {return LESSTHAN;}
+">="		{ return GREATERTHAN;}
 "<>"		  { return DIFF;}
 "=="		   {return EQUALS;}
 \n            { ++line_num; return ENDL;   }

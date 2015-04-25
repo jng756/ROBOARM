@@ -55,7 +55,7 @@ int tipoFunction;
 //Stacks para expresiones
 Stack<string> pilaO;
 Stack<int> pTipos;
-Stack<char> pilaOper;
+Stack<string> pilaOper;
 
 //Declaracion de archivo de cuadruplos
 ofstream myQuadStructure ("output.file");
@@ -145,7 +145,7 @@ bool guardaParametros(string IDstr, int tipoParam)
 		//Guardar los parametros como variables de la funcion 
 		variables.setNombreVar(IDstr);
 		variables.setDirVirtual(tipoParam);
-				cout<<"*****Parametros*****"<<endl;
+				
 
 				cout<<"Parametro : "<<IDstr <<" 	tipoVar: "<<tipoParam<<endl;
 			if(!entry.addVarTable(variables))
@@ -237,12 +237,11 @@ int generaExpresion()
 	 	string operador1="";
 	 	string operador2="";
 	 	string resultado="";
-	 	char tempSimb=' ';
-	 	stringstream ss;
+	 	string tempSimb;
 		
 	 	if (pilaOper.pop(tempSimb))
 	 	{
-	 		if (tempSimb=='+')
+	 		if (tempSimb=="+")
 	 		{
 	 			if (!pilaO.pop(operador2))
 	 				operador1="";
@@ -257,9 +256,9 @@ int generaExpresion()
 				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
-	 			ss<<contTemp;
-	 			contTemp++;
-	 			resultado="t"+ss.str();
+	 			
+	 			resultado="t"+itos(contTemp);
+
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,0);
@@ -273,9 +272,8 @@ int generaExpresion()
 
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"+\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
-	 			return tipoRes;
 	 		}
-	 		else if (tempSimb=='-')
+	 		else if (tempSimb=="-")
 	 		{
 	 			if (!pilaO.pop(operador2))
 	 				operador1="";
@@ -290,9 +288,8 @@ int generaExpresion()
 				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
-	 			ss<<contTemp;
-	 			contTemp++;
-	 			resultado="t"+ss.str();
+	 			resultado="t"+itos(contTemp);
+	 			
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,1);
@@ -306,10 +303,9 @@ int generaExpresion()
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"-\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 
-	 			return tipoRes;
 
 	 		}
-	 		else if (tempSimb=='*')
+	 		else if (tempSimb=="*")
 	 		{
 	 			if (!pilaO.pop(operador2))
 	 				operador1="";
@@ -324,9 +320,8 @@ int generaExpresion()
 				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
-	 			ss<<contTemp;
-	 			contTemp++;
-	 			resultado="t"+ss.str();
+	 			resultado="t"+itos(contTemp);
+	
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,2);
@@ -340,10 +335,9 @@ int generaExpresion()
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"*\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 
-	 			return tipoRes;
 	 		}
 
-	 		else if (tempSimb=='/')
+	 		else if (tempSimb=="/")
 	 		{
 	 			if (!pilaO.pop(operador2))
 	 				operador1="";
@@ -358,9 +352,9 @@ int generaExpresion()
 				cout<<"simbolo:"<<tempSimb<<endl;
 	 			cout<<"operador 1:"<<operador1<<endl;
 	 			cout<<"operador 2:"<<operador2<<endl;
-	 			ss<<contTemp;
-	 			contTemp++;
-	 			resultado="t"+ss.str();
+	 			resultado="t"+itos(contTemp);
+
+	 	
 	 			pilaO.push(resultado);
 
 		 		tipoRes=cubo(tipo1,tipo2,3);
@@ -374,13 +368,218 @@ int generaExpresion()
 	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
 	 			myQuadStructure<<"/\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
 
-	 			return tipoRes;
 	 		}
 
-	 		contTemp++;
+	 		if (tempSimb=="<")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,4);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<"<\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+
+	 		if (tempSimb==">")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,5);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<">\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		if (tempSimb=="<=")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,6);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<"<=\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		if (tempSimb==">=")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,7);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<">=\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		if (tempSimb=="==")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,8);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<"==\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+	 		if (tempSimb=="<>")
+	 		{
+	 			if (!pilaO.pop(operador2))
+	 				operador1="";
+	 			if (!pilaO.pop(operador1))
+	 				operador2="";
+
+	 			if (!pTipos.pop(tipo2))
+	 				tipo2=-1;
+	 			if (!pTipos.pop(tipo1))
+	 				tipo1=-1;
+
+				cout<<"simbolo:"<<tempSimb<<endl;
+	 			cout<<"operador 1:"<<operador1<<endl;
+	 			cout<<"operador 2:"<<operador2<<endl;
+	 			
+	 		
+	 			resultado="t"+itos(contTemp);
+	 			pilaO.push(resultado);
+
+		 		tipoRes=cubo(tipo1,tipo2,9);
+		 		if (tipoRes!=4)
+		 		{
+		 			cout<<"Invalid Operation! line number:"<<line_num<<endl;
+		 			return -1;
+		 		}
+
+		 		pTipos.push(tipoRes);
+
+	 			cout<<"Resultado: "<<resultado<<"\tTipo:"<< tipoRes<<endl;
+	 			myQuadStructure<<"<>\t"<<operador1<<"\t"<<operador2<< "\t t"<<contTemp<<endl;
+	 		}
+
+
+	 				contTemp++;
+	 			return tipoRes;
+
+	 		
 	 	}
+	 	cout<<"No operand"<<endl;
+	 	return -1;
 
 }
+
 
 
 string itos(int i) // convert int to string
@@ -491,6 +690,10 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 %token <sval> ID
 %token DIFF
 %token EQUALS
+%token LESSTHAN
+%token GREATERTHAN
+
+
 %token ENDL
 
 %token ROTATEWAIST
@@ -531,35 +734,44 @@ programa:
 	;
 
 functions:
-	FUNCTION ID '(' def_param ')' ':' tipo endl 
+	FUNCTION ID 
+
+		'(' def_param ')' ':' tipo endl 
 		{
+	
+		
+	
 			localFlag=true;
 			guardaFuncion(1,$2,$7, parametros);
 			tipoFunction=$7;
+			//Vaciar params
+			parametros="";
 		}
 		vars bloque_func ';' endl
 
 		{	
 			//vaciar la estructura de variables para iniciar una nueva funcion
 			entry.setVarTable(new HashMap<varEntry>);
-			//Vaciar params
-			parametros="";
+			
+	
 		}
 
 		 functions 
 	
-	| FUNCTION ID '(' def_param ')' ':' VOID endl {
+	| FUNCTION ID 
+	'(' def_param ')' ':' VOID endl {
 		localFlag=true;
 		guardaFuncion(2,$2,5, parametros);
 		tipoFunction=5;
+			//Vaciar params
+			parametros="";
 		}
 		 vars bloque_func2 ';' endl 
 
 		{	
 			//vaciar la estructura de variables para iniciar una nueva funcion
 			entry.setVarTable(new HashMap<varEntry>);
-			//Vaciar params
-			parametros="";
+		
 		}
 		functions 
 	|
@@ -652,7 +864,7 @@ bloque:
 bloque_func:
 	'{' endl 
 	{
-		cout<<"****Function  Code****";
+		cout<<"****Function  Code****"<<endl;
 	}
 	def_estatuto
 	TRET 
@@ -684,7 +896,7 @@ bloque_func:
 bloque_func2:
 	'{' endl 
 	{
-		cout<<"****Function  Code****";
+		cout<<"****Function  Code****"<<endl;
 	}
 		def_estatuto '}'
 	{
@@ -737,7 +949,7 @@ asignacion:
 		
 		if (tipoID!=tipoExp)
 		{
-			cout<<"Expresion no compatible"<<endl;
+			cout<<"Incompatible Types! line_num:"<<line_num<<endl;
 			exit(-1);
 		}
 
@@ -748,12 +960,33 @@ asignacion:
 	;
 
 condicion:
-	IF '(' expresion ')' 
+	IF	'(' expresion ')' 
 	{
+		int tipoBool;
+		string operador;
+		if (!pTipos.pop(tipoBool))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		if (tipoBool!=4)
+		{
+			cout<<"Incompatible types! expected condition line_num"<<line_num<<endl;
+		}
+
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+
+
+		myQuadStructure<<"IF\t"<<operador<<endl;
 
 
 	}
 	endl bloque def_else
+	{
+		myQuadStructure<<"ENDIF"<<endl;
+	}
 	;
 
 escritura:
@@ -773,18 +1006,19 @@ lectura:
 
 // added
 especial: 
-	ROTATEWAIST '(' varcte ')' ';' endl
-	| ROTATESHOULDER '(' varcte ')' ';' endl
-	| ROTATEELBOW '(' varcte ')' ';' endl
-	| ROTATEWRISTM '(' varcte ')' ';' endl
-	| ROTATEWRISTR '(' varcte ')' ';' endl
-	| ROTATETOOL '(' varcte ')' ';' endl
+	ROTATEWAIST '(' exp ')' ';' endl
+	| ROTATESHOULDER '(' exp ')' ';' endl
+	| ROTATEELBOW '(' exp ')' ';' endl
+	| ROTATEWRISTM '(' exp ')' ';' endl
+	| ROTATEWRISTR '(' exp ')' ';' endl
+	| ROTATETOOL '(' exp ')' ';' endl
 	;
 
 llamadas:  
 	//Solo las funciones de tipo 5
 	ID '(' params ')' ';' endl
 	{
+
 		{
 			int tipo=-1;
 			string params="";
@@ -813,13 +1047,59 @@ llamadas:
 	;
 
 def_else:
-	ELSE endl bloque
+	ELSE 
+	{
+		myQuadStructure<<"ELSE"<<endl;
+	}
+	endl bloque 
+	{
+		myQuadStructure<<"ENDELSE"<<endl;	
+	}
 	| 
 	;
 
 mensaje:
-	mensaje ',' expresion  
+	mensaje ',' expresion 
+	{
+		int tipoString;
+		string operador;
+		if (!pTipos.pop(tipoString))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		// if (tipoString!=1)
+		// {
+		// 	cout<<"Incompatible types! expected string line_num"<<line_num<<endl;
+		// }
+
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+		myQuadStructure<<"PRINT\t"<<operador<<endl;
+
+	} 
 	| expresion
+	{
+		int tipoString;
+		string operador;
+		if (!pTipos.pop(tipoString))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		// if (tipoString!=1)
+		// {
+		// 	cout<<"Incompatible types! expected string line_num"<<line_num<<endl;
+		// }
+
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+		myQuadStructure<<"PRINT\t"<<operador<<endl;
+
+	} 
+
 	;
 
 expresion:
@@ -827,10 +1107,61 @@ expresion:
 	;
 
 mas_expr:
-	'>' exp
-	| '<' exp
-	| DIFF exp
-	| EQUALS exp
+	'>' {
+			pilaOper.push(">");
+		}
+	exp
+		{
+			if(generaExpresion()==-1)
+			exit(-1);
+		}
+	| '<'
+		{
+			pilaOper.push("<");
+		}
+	 exp
+	 	{
+	 		if(generaExpresion()==-1)
+			exit(-1);	
+	 	}
+	|LESSTHAN
+		{
+			pilaOper.push("<=");
+		}
+	 
+	 exp
+	 	{
+	 		if(generaExpresion()==-1)
+			exit(-1);	
+	 	} 
+	|GREATERTHAN
+		{
+			pilaOper.push(">=");
+		}
+	 exp
+	 	{
+	 		if(generaExpresion()==-1)
+			exit(-1);	
+	 	} 	
+
+	| DIFF
+		{
+			pilaOper.push("<>");
+		}
+	 exp
+	 	{
+	 		if(generaExpresion()==-1)
+			exit(-1);	
+	 	}
+	| EQUALS 
+		{
+			pilaOper.push("==");
+		}
+		exp
+		{
+			if(generaExpresion()==-1)
+			exit(-1);	
+		}
 	|
 	;
 
@@ -838,7 +1169,7 @@ exp:
 	termino 
 	| exp '+'
 	{
-		pilaOper.push('+');
+		pilaOper.push("+");
 		
 	}
 	 
@@ -849,7 +1180,7 @@ exp:
 	 }
 	| exp '-' 
 	{
-		pilaOper.push('-');
+		pilaOper.push("-");
 	}
 	termino
 	 {
@@ -864,7 +1195,7 @@ termino:
 	factor
 	| termino '*' 
 	{
-		pilaOper.push('*');
+		pilaOper.push("*");
 	}
 	factor
 	{
@@ -873,7 +1204,7 @@ termino:
 	}
 	| termino '/' 
 	{
-	pilaOper.push('/');
+	pilaOper.push("/");
 	}
 	factor
 	{
@@ -912,8 +1243,9 @@ varcte:
 				cout<<"Parametros no coinciden"<<endl;
 				exit(-1);
 			}
+			parametros="";
 
-
+			//Para producir el operando
 			variable+=$1;
 			variable+="(";
 			if(lista_params.dequeue(acum))
@@ -981,6 +1313,7 @@ varcte:
 			exit(-1);
 		}
 		parametros+=itos(tipoExp);
+
 
 		if (!pilaO.pop(operando))
 		{

@@ -13,9 +13,9 @@ using namespace std;
 
 // Op1, Op2, Simbolo
 int cuboSemantico[5][5][10] = //verify		//with int input/output	ERROR=-1
-					//char:0		 + 0	>  6
-					//string:1		 - 1	<= 7
-					//int:2			 * 2	>= 8
+					//char:0		 + 0	>  5
+					//string:1		 - 1	<= 6
+					//int:2			 * 2	>= 7
 					//float:3		 / 3	== 8
 					//bool:4		 < 4	<> 9
 			{

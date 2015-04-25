@@ -20,11 +20,9 @@ BEGIN
 =	uno	t5
 <=	uno	resultado	 t6
 IF	t6
-PRINT	"Resultado"
-PRINT	4
+=	y	true
 ELSE
-PRINT	"Resultado"
-PRINT	3
+=	y	false
 ENDELSE
 ENDIF
 END
