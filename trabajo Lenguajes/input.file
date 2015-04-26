@@ -18,7 +18,8 @@ resultado=contador+suma(4+5,5);
 uno=(3+4)*4;
 if (uno<=resultado)
 {
- print ("Resultado",4);	
+ print ("Resultado",4);
+rotateWaist(true);	
 }
 else
 {

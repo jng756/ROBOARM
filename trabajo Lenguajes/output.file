@@ -22,9 +22,3 @@ BEGIN
 IF	t6
 PRINT	"Resultado"
 PRINT	4
-ELSE
-PRINT	"Resultado"
-PRINT	3
-ENDELSE
-ENDIF
-END

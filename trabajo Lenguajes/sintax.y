@@ -71,7 +71,6 @@ bool guardaParametros(string IDstr, int tipoParam);
 //Funcion para guardar funciones
 void guardaFuncion(int n, string nombre, int tipo, string params);
 
-
 //Función para convertir enteros a string
 string itos(int i);
 
@@ -80,18 +79,22 @@ string itos(int i);
 string decodificaTipo(int tipo); 
 
 //Busca el ID de una variable segun sea local o global el alojamiento 
-//Regresa el tipo de la variables
+//Regresa el tipo de la variable
 int buscaID(string IDstr);
 
 //Busca una función de la tabla de globales
 //Regresa el tipo de la funcion leida
 int buscaFuncion(string IDstr, string &params);
 
-
-
 //Genera cuadruplos para Expresiones
 //Regresa el tipo del resultado para una expresion
 int generaExpresion();
+
+
+//Genera cuadruplos para los estatutos especiales
+//Regresa el tipo del parametro de la funcion especial (int o float)
+int generaEspecial(int special);
+
 
 bool guardaVars(int tipoVar)
 {
@@ -580,6 +583,53 @@ int generaExpresion()
 
 }
 
+int generaEspecial(int special) {
+	string operador;
+	int tipoAngle;
+
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+			return -1;
+		}
+		if (!pTipos.pop(tipoAngle))
+		{
+			cout<<"No hay tipo"<<endl;
+			return -1;
+		}
+
+		if (tipoAngle!=2 && tipoAngle!=3)
+		{
+			cout<<"Incompatible Types on special function! on line number:"<<line_num<<endl;
+			return -1;
+		}
+
+	switch (special) {
+	case 0: //Rotate waist
+		myQuadStructure<<"RWAIST\t"<<operador<<endl;
+		break;
+	case 1: //Rotate shoulder
+		myQuadStructure<<"RSHOULDER\t"<<operador<<endl;
+		break;
+	case 2: //Rotate elbow
+		myQuadStructure<<"RELBOW\t"<<operador<<endl;
+		break;
+	case 3: //Rotate wristM
+		myQuadStructure<<"RWRISTM\t"<<operador<<endl;
+		break;
+	case 4: //Rotate wristR
+		myQuadStructure<<"RWRISTR\t"<<operador<<endl;
+		break;
+	case 5: //Rotate Tool
+		myQuadStructure<<"RTOOL\t"<<operador<<endl;
+		break;
+	}
+
+	return tipoAngle;
+
+}
+
+
 
 
 string itos(int i) // convert int to string
@@ -738,9 +788,6 @@ functions:
 
 		'(' def_param ')' ':' tipo endl 
 		{
-	
-		
-	
 			localFlag=true;
 			guardaFuncion(1,$2,$7, parametros);
 			tipoFunction=$7;
@@ -900,8 +947,6 @@ bloque_func2:
 	}
 		def_estatuto '}'
 	{
-
-
 		cout<<"Return void"<<endl;
 		myQuadStructure<<"RETVOID"<<endl;
 	} 
@@ -1007,12 +1052,38 @@ lectura:
 // added
 especial: 
 	ROTATEWAIST '(' exp ')' ';' endl
+	{
+		if (generaEspecial(0)==-1)
+			exit(-1);
+	}
+
 	| ROTATESHOULDER '(' exp ')' ';' endl
+	{
+		if (generaEspecial(1)==-1)
+			exit(-1);
+	}
 	| ROTATEELBOW '(' exp ')' ';' endl
+	{
+		if (generaEspecial(2)==-1)
+			exit(-1);
+	}
 	| ROTATEWRISTM '(' exp ')' ';' endl
+	{
+		if (generaEspecial(3)==-1)
+			exit(-1);
+	}
 	| ROTATEWRISTR '(' exp ')' ';' endl
+	{
+		if (generaEspecial(4)==-1)
+			exit(-1);
+	}
 	| ROTATETOOL '(' exp ')' ';' endl
+	{
+		if (generaEspecial(5)==-1)
+			exit(-1);
+	}
 	;
+
 
 llamadas:  
 	//Solo las funciones de tipo 5
