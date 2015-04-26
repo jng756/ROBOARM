@@ -84,7 +84,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 709 "sintax.y"
+#line 716 "sintax.y"
 
 	int ival;
 	float fval;

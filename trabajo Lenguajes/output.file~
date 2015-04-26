@@ -1,7 +1,4 @@
-VAR	resultado	tipo	int
-VAR	contador	tipo	int
-VAR	uno	tipo	int
-VAR	y	tipo	bool
+VAR	grade	tipo	char
 FUNCTION 	suma 	int
 PASS		op1	int
 PASS		op2	int
@@ -12,19 +9,17 @@ VAR	resultado	tipo	int
 =	op2	suma(1,2)
 RETURN	resultado
 BEGIN
-+	4	5	 t2
-+	contador	suma(t2,5)	 t3
-=	resultado	t3
-+	3	4	 t4
-*	t4	4	 t5
-=	uno	t5
-<=	uno	resultado	 t6
-IF	t6
-PRINT	"Resultado"
-PRINT	4
-ELSE
-PRINT	"Resultado"
-PRINT	3
-ENDELSE
-ENDIF
+PRINT	"ENTER YOUR GRADES"
+READ	grade
+CASE	grade
+OPTION	'A'
+PRINT	"Excellent"
+OPTION	'B'
+PRINT	"Good"
+OPTION	'C'
+PRINT	"enough"
+OPTION	'D'
+EXTRAOPTION	'E'
+PRINT	"not enough"
+ENDCASE
 END

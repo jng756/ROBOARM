@@ -46,11 +46,18 @@ Queue<IDs> IDstruct;
 //Lista de parametros para las llamadas
 Queue<string> lista_params;
 
+
+
+
 //string de parametros
 string parametros="";
 
 //Tipo de Funcion
 int tipoFunction;
+
+//Tipo para case
+int tipoCase;
+string optionStr;
 
 //Stacks para expresiones
 Stack<string> pilaO;
@@ -765,6 +772,9 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 
 //Declaracion de tipos de las expresiones
 %type <ival> tipo
+%type <ival> constants
+
+
 %start programa
 
 
@@ -930,7 +940,7 @@ bloque_func:
 
 		if (tipoFunction!=tipof)
 		{
-			cout<<"Expresion no compatible"<<endl;
+			cout<<"Return not compatible with function! on line:"<<line_num<<endl;
 			exit(-1);
 		}
 
@@ -1037,16 +1047,120 @@ condicion:
 escritura:
 	PRINT '(' mensaje ')' ';' endl
 	;
+
+
 casos:
-	CASE ID OF endl '{' mas_expr ':' estatuto ';' endl '}' ';' endl
+	CASE '(' ID ')' OF 
+	{
+	
+
+		tipoCase=buscaID($3);
+
+		if (tipoCase == -1)
+		{
+			cout<<"Variable not defined on line:"<<line_num<<endl;
+			exit(-1);
+		}
+
+		myQuadStructure<<"CASE\t"<<$3<<endl;
+	}
+	
+
+	endl '{' endl options '}' endl ';' endl
+	
+
+	{
+	myQuadStructure<<"ENDCASE"<<endl;
+	}
+
 	;
+
+options:
+options values ':' estatuto
+| values ':' estatuto
+;
+
+values:
+values ',' constants
+{
+	if (tipoCase!=$3)
+	{
+		cout<<"Incompatible types! on line: "<<line_num<<endl;
+	}
+	myQuadStructure<<"EXTRAOPTION\t"<<optionStr<<endl;
+}
+
+| constants
+{
+	if (tipoCase!=$1)
+	{
+		cout<<"Incompatible types! on line: "<<line_num<<endl;
+	}
+	myQuadStructure<<"OPTION\t"<<optionStr<<endl;
+}
+
+;
+
+constants:
+	CTE_I {
+		$$=2;
+		optionStr=$1;
+		}
+	| CTE_F {
+		$$=3;
+		optionStr=$1;
+		}
+	| CTE_STRING {
+
+		$$=1;
+		optionStr=$1;
+		
+		}
+	| CTE_CHAR {
+		$$=0;
+		optionStr=$1;
+
+	}
+	| CTE_BOOL {
+		$$=4;
+		optionStr=$1;
+	}
+	;
+
+
+
+
 
 ciclo:
 	WHILE '(' expresion ')' DO endl bloque ';' endl
 	;
 
+
+
+
 lectura:
 	READ '(' ID ')' ';' endl
+
+	{
+		int tipoID;
+
+		tipoID=buscaID($3);
+
+		if (tipoID == -1)
+		{
+			cout<<"Variable not defined on line:"<<line_num<<endl;
+			exit(-1);
+		}
+
+
+		if (tipoID==4)
+		{
+			cout<<"Cannot read type Bool!on line:"<<line_num<<endl;
+			exit(-1);
+		}
+
+		myQuadStructure<<"READ\t"<<$3<<endl;
+	}
 	;
 
 // added

@@ -1,0 +1,30 @@
+program x;
+var 
+resultado, contador : int;
+uno : int;
+y : bool;
+
+function suma(op1:int, op2:int) : int
+	var resultado:int;
+	
+{
+	resultado=op1+op2;
+	op2=suma(1,2);
+	ret resultado
+};
+begin
+
+resultado=contador+suma(4+5,5);
+uno=(3+4)*4;
+if (uno<=resultado)
+{
+ print ("Resultado",4);
+rotateWaist(34.5);	
+}
+else
+{
+ read (uno);
+ print("Resultado",3);
+}
+end
+
