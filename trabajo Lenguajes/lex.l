@@ -50,7 +50,7 @@ rotateTool	{ return ROTATETOOL;}
 
 [0-9]+\.[0-9]+(("E"|"e")("+"|"-")?[0-9]+)? 	{ yylval.sval = strdup(yytext); return CTE_F; }
 
-\"[[:alnum:][:digit:][:space:]]*\"   { yylval.sval = strdup(yytext);	return CTE_STRING;}
+\"([[:alnum:][:digit:][:space:]]|:|_)*\"   { yylval.sval = strdup(yytext);	return CTE_STRING;}
 
 '[a-zA-Z0-9]'   { yylval.sval = strdup(yytext);	return CTE_CHAR;}
 

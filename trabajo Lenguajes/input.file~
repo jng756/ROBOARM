@@ -1,19 +1,22 @@
 program x;
 var 
-	factorial : int;
-	numero : int;
-	contador : int;
+factorial, contador : int;
+numero: int;
+
 
 begin
-	factorial=1;
-	print("Escribe el numero");
-	read(numero);
-	contador=numero;
-	while (contador>1) do
-	{
-		factorial=factorial*contador; 
-		contador=contador-1;
-		sleep(2000);
-	};
+print("Introduce un numero");
+read(numero);
+contador=numero;
+factorial=1;
+ while(contador>=1) do
+     {
+     factorial=factorial*contador;
+     contador=contador-1;
+    };     
+print("Resultado: ",factorial);
+
+
 end
+
 
