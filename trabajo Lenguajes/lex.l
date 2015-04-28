@@ -27,10 +27,12 @@ while		  { return WHILE; }
 do	          { return DO; }
 case		  { return CASE; }
 of	          { return OF; }
+sleep		 { return SLEEP;}
 print 		  { return PRINT; }
 read		  { return READ; }
 true 		  { yylval.sval=strdup("true") ; return CTE_BOOL;}
 false         { yylval.sval=strdup("false"); return CTE_BOOL;}
+
 begin		{ return TBEGIN;}
 end		{return TEND;}
 ret 	{return TRET; }

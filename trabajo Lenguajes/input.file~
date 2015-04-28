@@ -1,26 +1,19 @@
 program x;
 var 
-grade : char;
+	factorial : int;
+	numero : int;
+	contador : int;
 
-function suma(op1:int, op2:int) : int
-	var resultado:int;
-	
-{
-	resultado=op1+op2;
-	op2=suma(1,2);
-	ret resultado
-};
 begin
-
-print("ENTER YOUR GRADES");
-read(grade);
-case (grade) of 
-{
-'A': print("Excellent");
-'B': print("Good");
-'C': print("enough");
-'D': print("not enough");
-};
-
+	factorial=1;
+	print("Escribe el numero");
+	read(numero);
+	contador=numero;
+	while (contador>1) do
+	{
+		factorial=factorial*contador; 
+		contador=contador-1;
+		sleep(2);
+	};
 end
 

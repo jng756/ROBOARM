@@ -1,25 +1,17 @@
-VAR	grade	tipo	char
-FUNCTION 	suma 	int
-PASS		op1	int
-PASS		op2	int
-ENDFUNCTION
-VAR	resultado	tipo	int
-+	op1	op2	 t1
-=	resultado	t1
-=	op2	suma(1,2)
-RETURN	resultado
+VAR	factorial	tipo	int
+VAR	numero	tipo	int
+VAR	contador	tipo	int
 BEGIN
-PRINT	"ENTER YOUR GRADES"
-READ	grade
-CASE	grade
-OPTION	'A'
-PRINT	"Excellent"
-OPTION	'B'
-PRINT	"Good"
-OPTION	'C'
-PRINT	"enough"
-OPTION	'D'
-EXTRAOPTION	'E'
-PRINT	"not enough"
-ENDCASE
+=	1	factorial
+PRINT	"Escribe el numero"
+READ	numero
+=	numero	contador
+>	contador	1	 t[1]
+WHILE	t[1]
+*	factorial	contador	 t[2]
+=	t[2]	factorial
+-	contador	1	 t[3]
+=	t[3]	contador
+SLEEP	2000
+ENDWHILE
 END

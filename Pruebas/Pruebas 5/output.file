@@ -4,9 +4,9 @@ PASS		op1	int
 PASS		op2	int
 ENDFUNCTION
 VAR	resultado	tipo	int
-+	op1	op2	 t1
-=	resultado	t1
-=	op2	suma(1,2)
++	op1	op2	 t[1]
+=	t[1]	resultado
+=	suma(1,2)	op2
 RETURN	resultado
 BEGIN
 PRINT	"ENTER YOUR GRADES"
