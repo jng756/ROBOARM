@@ -1,19 +1,29 @@
 program x;
 var 
-	factorial : int;
-	numero : int;
-	contador : int;
+resultado, contador : int;
+uno : int;
+y : bool;
 
+function suma(op1:int, op2:int) : int
+	var resultado:int;
+	
+{
+	resultado=op1+op2;
+	op2=suma(1,2);
+	ret resultado
+};
 begin
-	factorial=1;
-	print("Escribe el numero");
-	read(numero);
-	contador=numero;
-	while (contador>1) do
-	{
-		factorial=factorial*contador; 
-		contador=contador-1;
-		sleep(2000);
-	};
+
+resultado=contador+suma(4+5,5);
+uno=(3+4)*4;
+if (uno<=resultado)
+{
+ print ("Resultado",4);	
+}
+else
+{
+ print("Resultado",3);
+}
 end
+
 

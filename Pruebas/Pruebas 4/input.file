@@ -18,13 +18,12 @@ resultado=contador+suma(4+5,5);
 uno=(3+4)*4;
 if (uno<=resultado)
 {
- print ("Resultado",4);
-rotateWaist(34.5);	
+ print ("Resultado",4);	
 }
 else
 {
- read (uno);
  print("Resultado",3);
 }
 end
+
 

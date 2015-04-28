@@ -1,17 +1,30 @@
-VAR	factorial	tipo	int
-VAR	numero	tipo	int
+VAR	resultado	tipo	int
 VAR	contador	tipo	int
+VAR	uno	tipo	int
+VAR	y	tipo	bool
+FUNCTION 	suma 	int
+PASS		op1	int
+PASS		op2	int
+ENDFUNCTION
+VAR	resultado	tipo	int
++	op1	op2	 t[1]
+=	t[1]	resultado
+=	suma(1,2)	op2
+RETURN	resultado
 BEGIN
-=	1	factorial
-PRINT	"Escribe el numero"
-READ	numero
-=	numero	contador
->	contador	1	 t[1]
-WHILE	t[1]
-*	factorial	contador	 t[2]
-=	t[2]	factorial
--	contador	1	 t[3]
-=	t[3]	contador
-SLEEP	2000
-ENDWHILE
++	4	5	 t[2]
++	contador	suma(t[2],5)	 t[3]
+=	t[3]	resultado
++	3	4	 t[4]
+*	t[4]	4	 t[5]
+=	t[5]	uno
+<=	uno	resultado	 t[6]
+IF	t[6]
+PRINT	"Resultado"
+PRINT	4
+ELSE
+PRINT	"Resultado"
+PRINT	3
+ENDELSE
+ENDIF
 END
