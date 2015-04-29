@@ -69,28 +69,41 @@ ofstream myQuadStructure ("output.file");
 
 //Funciones
 
-//Funcion para guardar Variables
+//Funcion para guardar Variables en la tabla de variables
+//Recibe tipoVar: tipo de variable a guardar
+//Regresa false si no se puede guardar la variable 
 bool guardaVars(int tipoVar);
 
-//Funcion para guardar parametros
+//Funcion para registrar los parametros
+//Recibe tipoVar: tipo de variable a guardar
+//Regresa false si no se puede guardar la variable 
 bool guardaParametros(string IDstr, int tipoParam);
 
 //Funcion para guardar funciones
-void guardaFuncion(int n, string nombre, int tipo, string params);
+//Recibe n: (1: Guarda las funciones de tipos, 2: Guarda la función void
+//Recibe nombre: Nombre de la función a guardar
+//Recibe tipo: tipo de función a guardar
+//Recibe params: string de parametros registrados
+//Regresa false si no se puede guardar la función  
+int guardaFuncion(int n, string nombre, int tipo, string params);
 
 //Función para convertir enteros a string
 string itos(int i);
 
 //Funcion para decodificar el numero del tipo a un string
 //(0=char,1=string,2=int, 3=float, 4=bool)
+//Recibe el tipo y devuelve el string de tipo
 string decodificaTipo(int tipo); 
 
 //Busca el ID de una variable segun sea local o global el alojamiento 
-//Regresa el tipo de la variable
+//Recibe un string para buscarlo en la tabla de variables
+//Regresa el tipo de la variable; en caso de encontrar errores regresa -1
 int buscaID(string IDstr);
 
-//Busca una función de la tabla de globales
+//Busca una función en la tabla de globales
 //Regresa el tipo de la funcion leida
+//Regresa -1 si falla la función
+
 int buscaFuncion(string IDstr, string &params);
 
 //Genera cuadruplos para Expresiones
@@ -101,6 +114,11 @@ int generaExpresion();
 //Genera cuadruplos para los estatutos especiales
 //Regresa el tipo del parametro de la funcion especial (int o float)
 int generaEspecial(int special);
+
+//Genera cuadruplos para el estatuto de retorno 
+
+int generaRET();
+
 
 
 bool guardaVars(int tipoVar)
@@ -636,6 +654,28 @@ int generaEspecial(int special) {
 
 }
 
+int generaRET()
+{
+		int tipof;
+		string operador;
+		if (!pTipos.pop(tipof))
+		{
+			cout<<"No hay tipo"<<endl;
+		}
+		if (!pilaO.pop(operador))
+		{
+			cout<<"No hay operador"<<endl;
+		}
+
+		if (tipoFunction!=tipof)
+		{
+			cout<<"Return not compatible with function! on line:"<<line_num<<endl;
+			return -1;
+		}
+
+		myQuadStructure<<"RETURN\t"<< operador<<endl;
+}
+
 
 
 
@@ -646,7 +686,7 @@ string itos(int i) // convert int to string
     return s.str();
 }
 
-void guardaFuncion(int n, string nombre, int tipo, string params)
+int guardaFuncion(int n, string nombre, int tipo, string params)
 {
 
 	if (n==1)
@@ -657,7 +697,8 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 
 				if (!pragma.tableAddEntry(entry))
 				{
-					cout<<"No se pudo agregar: "<< nombre <<endl;
+					cout<<"Function previously declared on line:: "<<line_num<<nombre <<endl;
+					return -1;
 				}
 				else
 				{
@@ -675,6 +716,8 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 				
 				}
 				myQuadStructure<<"ENDFUNCTION"<<endl;
+
+				return tipo;
 	}
 	else if (n==2)
 	{
@@ -684,7 +727,8 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 			entry.setParams(params);
 			if (!pragma.tableAddEntry(entry))
 				{
-					cout<<"No se pudo agregar: "<< nombre <<endl;
+					cout<<"Function previously declared on line: "<<line_num<<nombre <<endl;
+					return -1;
 				}
 			else
 				{
@@ -697,6 +741,7 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 					myQuadStructure<<"pass	\t"<<tempStr.IDstr<< "\t"<<decodificaTipo(tempStr.tipoVar)<<endl;
 				}
 				myQuadStructure<<"ENDFUNCTION"<<endl;
+				return tipo;
 
 		
 	}
@@ -784,14 +829,16 @@ void guardaFuncion(int n, string nombre, int tipo, string params)
 
 programa:
 	PROG ID	{
+		//Registra el nombre del programa
 		pragma.setNombre($2);
-	} 
+			} 
 	';' endl vars functions  {
+		
+		//Al terminar de declarar variables desahbilita que las variables de alojen de forma local a la función
 		localFlag=false;
 	}
 
-	coding 
-	{  cout << "Fin del analisis del programa " << endl; }
+	coding
 	;
 
 functions:
@@ -799,10 +846,16 @@ functions:
 
 		'(' def_param ')' ':' tipo endl 
 		{
+			//Activia alojamiento local a la funcion
 			localFlag=true;
-			guardaFuncion(1,$2,$7, parametros);
+			//Guarda la función en la tabla
+			if (guardaFuncion(1,$2,$7, parametros)==1)
+			{
+				exit(-1);
+			}
+			//Guarda el tipo en una variable para verificar que el return de la función sea compatible
 			tipoFunction=$7;
-			//Vaciar params
+			//Vacia params
 			parametros="";
 		}
 		vars bloque_func ';' endl
@@ -817,11 +870,19 @@ functions:
 		 functions 
 	
 	| FUNCTION ID 
-	'(' def_param ')' ':' VOID endl {
+	'(' def_param ')' ':' VOID endl 
+	{
+		//Activia alojamiento local a la funcion
 		localFlag=true;
-		guardaFuncion(2,$2,5, parametros);
+	
+		//Guarda la función en la tabla
+			if (guardaFuncion(2,$2,5, parametros))
+			{
+				exit(-1);
+			}
+		//Guarda que la funcion es tipo void
 		tipoFunction=5;
-			//Vaciar params
+			//Vaciaa params
 			parametros="";
 		}
 		 vars bloque_func2 ';' endl 
@@ -839,7 +900,7 @@ functions:
 def_param:
 	def_param ',' ID ':' tipo  
 		{
-
+		
 		if (!guardaParametros($3,$5))
 			{
 				exit(-1);
@@ -905,11 +966,14 @@ tipo:
 
 coding:
 	TBEGIN {
+
+		//Debug
 		myQuadStructure<<"BEGIN"<<endl;
 		cout<<"*****Coding Start****"<<endl;
 	}
 		endl def_estatuto TEND 
 		{
+			//Debug
 			myQuadStructure<<"END"<<endl;
 			cout<<"****Coding Finish*****"<<endl;
 		}
@@ -922,31 +986,15 @@ bloque:
 bloque_func:
 	'{' endl 
 	{
+		//Debug
 		cout<<"****Function  Code****"<<endl;
 	}
-	def_estatuto
-	TRET 
-	expresion 
+	def_estatuto TRET expresion 
 	{
-		int tipof;
-		string operador;
-		if (!pTipos.pop(tipof))
+		if (generaRET()==-1)
 		{
-			cout<<"No hay tipo"<<endl;
-		}
-		if (!pilaO.pop(operador))
-		{
-			cout<<"No hay operador"<<endl;
-		}
-
-		if (tipoFunction!=tipof)
-		{
-			cout<<"Return not compatible with function! on line:"<<line_num<<endl;
 			exit(-1);
 		}
-
-		myQuadStructure<<"RETURN\t"<< operador<<endl;
-
 	}
 
 	endl '}' endl
@@ -954,10 +1002,12 @@ bloque_func:
 bloque_func2:
 	'{' endl 
 	{
+		//Debug
 		cout<<"****Function  Code****"<<endl;
 	}
 		def_estatuto '}'
 	{
+		//Debug
 		cout<<"Return void"<<endl;
 		myQuadStructure<<"RETVOID"<<endl;
 	} 
@@ -1047,7 +1097,9 @@ condicion:
 	;
 
 escritura:
+	//El print lo genera solo para mensajes
 	PRINT '(' mensaje ')' ';' endl
+
 	;
 
 
@@ -1088,6 +1140,7 @@ values ',' constants
 	if (tipoCase!=$3)
 	{
 		cout<<"Incompatible types! on line: "<<line_num<<endl;
+		exit(-1);
 	}
 	myQuadStructure<<"EXTRAOPTION\t"<<optionStr<<endl;
 }
@@ -1097,6 +1150,7 @@ values ',' constants
 	if (tipoCase!=$1)
 	{
 		cout<<"Incompatible types! on line: "<<line_num<<endl;
+		exit(-1);
 	}
 	myQuadStructure<<"OPTION\t"<<optionStr<<endl;
 }
@@ -1188,7 +1242,7 @@ sleep:
 
 		if (tipoDelay!=2 )
 		{
-			cout<<"Incompatible Types on special function! on line number:"<<line_num<<endl;
+			cout<<"Incompatible Types on sleep function! on line number:"<<line_num<<endl;
 			return -1;
 		}
 
@@ -1215,7 +1269,7 @@ lectura:
 
 		if (tipoID==4)
 		{
-			cout<<"Cannot read type Bool!on line:"<<line_num<<endl;
+			cout<<"Cannot read type Bool! on line:"<<line_num<<endl;
 			exit(-1);
 		}
 
@@ -1312,10 +1366,12 @@ mensaje:
 		{
 			cout<<"No hay tipo"<<endl;
 		}
-		// if (tipoString!=1)
-		// {
-		// 	cout<<"Incompatible types! expected string line_num"<<line_num<<endl;
-		// }
+		
+		if (tipoString==3 || tipoString==4)
+		 {
+		 	cout<<"Incompatible types! to print on line:"<<line_num<<endl;
+		 	exit(-1);
+		 }
 
 		if (!pilaO.pop(operador))
 		{
@@ -1332,10 +1388,12 @@ mensaje:
 		{
 			cout<<"No hay tipo"<<endl;
 		}
-		// if (tipoString!=1)
-		// {
-		// 	cout<<"Incompatible types! expected string line_num"<<line_num<<endl;
-		// }
+		
+		if (tipoString==3 || tipoString==4)
+		 {
+		 	cout<<"Incompatible types! to print on line:"<<line_num<<endl;
+		 	exit(-1);
+		 }
 
 		if (!pilaO.pop(operador))
 		{
@@ -1459,10 +1517,10 @@ termino:
 	;
 factor:
 	'(' expresion ')'
-	| varcte
+	| variable
 	;
 
-varcte:
+variable:
 	ID '(' params ')'
 		{
 		int tipo=-1;
@@ -1493,9 +1551,10 @@ varcte:
 			//Para producir el operando
 			variable+=$1;
 			variable+="(";
+			//El primero es sin la coma
 			if(lista_params.dequeue(acum))
 				variable+=acum;
-				
+			//Los siguientes se les antepone una coma
 			while(lista_params.dequeue(acum))
 			{
 			 variable+=",";

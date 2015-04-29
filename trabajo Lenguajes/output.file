@@ -13,3 +13,6 @@ WHILE	t[1]
 -	contador	1	 t[3]
 =	t[3]	contador
 ENDWHILE
+PRINT	"Resultado: "
+PRINT	factorial
+END
