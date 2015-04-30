@@ -1,60 +1,28 @@
 program x;
 var 
-b1, b2, b3 :bool;
+resultado, contador : int;
+uno : int;
+y : bool;
 
-function mov1(): void
+function suma(op1:int, op2:int) : int
+	var resultado:int;
 {
-  rotateWaist(110);
+	resultado=op1+op2;
+	ret resultado
 };
 
-function mov2():void
-{
-  rotateShoulder(90);
-};
-
-function mov2():void
-{
-  rotateElbow(145);
-};
 
 begin
 
-while (true) do
+resultado=contador+suma(4*4,5);
+uno=20;
+if (uno<=resultado)
 {
-  read(b1);
-  read(b2);
-  read(b3);
-
-if (b1==true) 
-{
-   mov1();
-   sleep(50);
-   while (b1==true) do
-	{
-	  read(b1);	
-	};
+ print ("Resultado",4);	
 }
-if (b2==true) 
+else
 {
-   mov2();
-   sleep(50);
-   while (b2==true) do
-	{
-	  read(b2);	
-	};
-
+ print("Resultado",true);
 }
-if (b3==true) 
-{
-   mov3();
-   sleep(50);
-   while (b3==true) do
-	{
-	  read(b3);	
-	};
-}
-};
-
 end
-
 

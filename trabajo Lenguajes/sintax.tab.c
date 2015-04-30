@@ -2690,7 +2690,7 @@ yyreduce:
 		}
 		if (tipoBool!=4)
 		{
-			cout<<"Incompatible types! expected condition line_num"<<line_num<<endl;
+			cout<<"Incompatible types! expected condition on line:"<<line_num<<endl;
 		}
 
 		if (!pilaO.pop(operador))
@@ -3003,7 +3003,7 @@ yyreduce:
 				cout<<"Parametros Leidos:"<<parametros<< endl;		
 				if (parametros!=params)
 				{
-					cout<<"Parametros no coinciden"<<endl;
+					cout<<"Wrong parameters! on line number"<<line_num<<endl;
 					exit(-1);
 				}
 		}
@@ -3298,8 +3298,8 @@ yyreduce:
 			cout<<"Parametros Leidos:"<<parametros<< endl;		
 			if (parametros!=params)
 			{
-				cout<<"Parametros no coinciden"<<endl;
-				exit(-1);
+					cout<<"Wrong parameters! on line number:"<<line_num<<endl;
+					exit(-1);
 			}
 			parametros="";
 
