@@ -1,0 +1,25 @@
+program x;
+var 
+numero : int;
+
+function factorial( num : int) : int
+var resultado : int;
+{
+   if (num == 1)
+    {
+     resultado = 1;
+    }
+   else
+    {
+     resultado = num * factorial(num-1);
+     }
+ret resultado
+};
+
+begin
+
+print("Resultado: ", factorial(7));
+
+end
+
+

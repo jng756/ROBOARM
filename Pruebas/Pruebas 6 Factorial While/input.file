@@ -1,0 +1,22 @@
+program x;
+var 
+factorial, contador : int;
+numero: int;
+
+
+begin
+numero=7;
+
+contador=numero;
+factorial=1;
+ while(contador>=1) do
+     {
+     factorial=factorial*contador;
+     contador=contador-1;
+    };     
+print("Resultado: ",factorial);
+
+
+end
+
+

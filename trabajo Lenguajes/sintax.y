@@ -697,7 +697,7 @@ int guardaFuncion(int n, string nombre, int tipo, string params)
 
 				if (!pragma.tableAddEntry(entry))
 				{
-					cout<<"Function previously declared on line:: "<<line_num<<nombre <<endl;
+					cout<<"Function previously declared on line:: "<<line_num<<"\t"<<nombre <<endl;
 					return -1;
 				}
 				else
@@ -727,7 +727,7 @@ int guardaFuncion(int n, string nombre, int tipo, string params)
 			entry.setParams(params);
 			if (!pragma.tableAddEntry(entry))
 				{
-					cout<<"Function previously declared on line: "<<line_num<<nombre <<endl;
+					cout<<"Function previously declared on line: "<<line_num<<"\t"<<nombre <<endl;
 					return -1;
 				}
 			else
@@ -849,7 +849,7 @@ functions:
 			//Activia alojamiento local a la funcion
 			localFlag=true;
 			//Guarda la función en la tabla
-			if (guardaFuncion(1,$2,$7, parametros)==1)
+			if (guardaFuncion(1,$2,$7, parametros)==-1)
 			{
 				exit(-1);
 			}
@@ -876,7 +876,7 @@ functions:
 		localFlag=true;
 	
 		//Guarda la función en la tabla
-			if (guardaFuncion(2,$2,5, parametros))
+			if (guardaFuncion(2,$2,5, parametros)==-1)
 			{
 				exit(-1);
 			}
@@ -884,10 +884,13 @@ functions:
 		tipoFunction=5;
 			//Vaciaa params
 			parametros="";
-		}
+
+		
+	}
 		 vars bloque_func2 ';' endl 
 
 		{	
+
 			//vaciar la estructura de variables para iniciar una nueva funcion
 			entry.setVarTable(new HashMap<varEntry>);
 		
@@ -895,6 +898,7 @@ functions:
 		functions 
 	|
 	;
+
 
 
 def_param:
@@ -913,10 +917,11 @@ def_param:
 		if (!guardaParametros($1,$3))
 			{
 				exit(-1);
-
 			}
 	}
+	|
 	;
+
 
 vars:
 	VAR endl def_vars 
@@ -1090,10 +1095,11 @@ condicion:
 
 
 	}
-	endl bloque def_else
+	endl bloque
 	{
 		myQuadStructure<<"ENDIF"<<endl;
 	}
+	 def_else
 	;
 
 escritura:
@@ -1267,9 +1273,9 @@ lectura:
 		}
 
 
-		if (tipoID==4)
+		if (tipoID!=4)
 		{
-			cout<<"Cannot read type Bool! on line:"<<line_num<<endl;
+			cout<<"Cannot read variable! on line:"<<line_num<<endl;
 			exit(-1);
 		}
 

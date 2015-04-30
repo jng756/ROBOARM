@@ -1,0 +1,17 @@
+VAR	factorial	tipo	int
+VAR	contador	tipo	int
+VAR	numero	tipo	int
+BEGIN
+=	7	numero
+=	numero	contador
+=	1	factorial
+>=	contador	1	 t[1]
+WHILE	t[1]
+*	factorial	contador	 t[2]
+=	t[2]	factorial
+-	contador	1	 t[3]
+=	t[3]	contador
+ENDWHILE
+PRINT	"Resultado: "
+PRINT	factorial
+END

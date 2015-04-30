@@ -1,0 +1,19 @@
+program x;
+var 
+grade : char;
+
+begin
+grade= 'A';
+
+print("YOUR GRADE IS");
+
+case (grade) of 
+{
+'A': print("Excellent");
+'B': print("Good");
+'C': print("enough");
+'D','E': print("not enough");
+};
+
+end
+

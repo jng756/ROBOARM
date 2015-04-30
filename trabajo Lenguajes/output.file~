@@ -1,25 +1,46 @@
-VAR	grade	tipo	char
-FUNCTION 	suma 	int
-PASS		op1	int
-PASS		op2	int
+VAR	b1	tipo	bool
+VAR	b2	tipo	bool
+VAR	b3	tipo	bool
+FUNCTION 	mov1 	void
 ENDFUNCTION
-VAR	resultado	tipo	int
-+	op1	op2	 t1
-=	resultado	t1
-=	op2	suma(1,2)
-RETURN	resultado
+RWAIST	110
+RETVOID
+FUNCTION 	mov2 	void
+ENDFUNCTION
+RSHOULDER	90
+RETVOID
+FUNCTION 	mov3 	void
+ENDFUNCTION
+RELBOW	145
+RETVOID
 BEGIN
-PRINT	"ENTER YOUR GRADES"
-READ	grade
-CASE	grade
-OPTION	'A'
-PRINT	"Excellent"
-OPTION	'B'
-PRINT	"Good"
-OPTION	'C'
-PRINT	"enough"
-OPTION	'D'
-EXTRAOPTION	'E'
-PRINT	"not enough"
-ENDCASE
+WHILE	true
+READ	b1
+READ	b2
+READ	b3
+==	b1	true	 t[1]
+IF	t[1]
+SLEEP	50
+==	b1	true	 t[2]
+WHILE	t[2]
+READ	b1
+ENDWHILE
+ENDIF
+==	b2	true	 t[3]
+IF	t[3]
+SLEEP	50
+==	b2	true	 t[4]
+WHILE	t[4]
+READ	b2
+ENDWHILE
+ENDIF
+==	b3	true	 t[5]
+IF	t[5]
+SLEEP	50
+==	b3	true	 t[6]
+WHILE	t[6]
+READ	b3
+ENDWHILE
+ENDIF
+ENDWHILE
 END

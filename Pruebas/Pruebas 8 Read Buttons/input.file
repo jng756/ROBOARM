@@ -1,0 +1,45 @@
+program x;
+var 
+b1, b2, b3 :bool;
+
+begin
+
+while (true) do
+{
+  read(b1);
+  read(b2);
+  read(b3);
+
+if (b1==true) 
+{
+   print("Se presiono boton 1");
+   sleep(50);
+   while(b1==true)do
+	{
+	  read(b1);	
+	};
+}
+if (b2==true) 
+{
+   print("Se presiono boton 2");
+   sleep(50);
+   while(b1==true) do
+	{
+	  read(b1);	
+	};
+
+}
+if (b3==true) 
+{
+   print("Se presiono boton 3");
+   sleep(50);
+   while(b1==true) do
+	{
+	  read(b1);	
+	};
+}
+};
+
+end
+
+

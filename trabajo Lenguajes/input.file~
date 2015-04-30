@@ -1,21 +1,59 @@
 program x;
 var 
-factorial, contador : int;
-numero: int;
+b1, b2, b3 :bool;
 
+function mov1(): void
+{
+  rotateWaist(110);
+};
+
+function mov2():void
+{
+  rotateShoulder(90);
+};
+
+function mov2():void
+{
+  rotateElbow(145);
+};
 
 begin
-print("Introduce un numero");
-read(numero);
-contador=numero;
-factorial=1;
- while(contador>=1) do
-     {
-     factorial=factorial*contador;
-     contador=contador-1;
-    };     
-print("Resultado: ",factorial);
 
+while (true) do
+{
+  read(b1);
+  read(b2);
+  read(b3);
+
+if (b1==true) 
+{
+   mov1();
+   sleep(50);
+   while (b1==true) do
+	{
+	  read(b1);	
+	};
+}
+if (b2==true) 
+{
+   mov2();
+   sleep(50);
+   while (b2==true) do
+	{
+	  read(b2);	
+	};
+
+}
+if (b3==true) 
+{
+   mov3();
+   sleep(50);
+   while (b3==true) do
+	{
+	  read(b3);	
+	};
+}
+};
 
 end
 

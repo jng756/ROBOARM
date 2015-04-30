@@ -1,0 +1,16 @@
+VAR	grade	tipo	char
+BEGIN
+=	'A'	grade
+PRINT	"YOUR GRADE IS"
+CASE	grade
+OPTION	'A'
+PRINT	"Excellent"
+OPTION	'B'
+PRINT	"Good"
+OPTION	'C'
+PRINT	"enough"
+OPTION	'D'
+EXTRAOPTION	'E'
+PRINT	"not enough"
+ENDCASE
+END

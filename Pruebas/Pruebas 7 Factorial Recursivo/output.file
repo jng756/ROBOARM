@@ -1,0 +1,19 @@
+VAR	numero	tipo	int
+FUNCTION 	factorial 	int
+PASS		num	int
+ENDFUNCTION
+VAR	resultado	tipo	int
+==	num	1	 t[1]
+IF	t[1]
+=	1	resultado
+ENDIF
+ELSE
+-	num	1	 t[2]
+*	num	factorial(t[2])	 t[3]
+=	t[3]	resultado
+ENDELSE
+RETURN	resultado
+BEGIN
+PRINT	"Resultado: "
+PRINT	factorial(7)
+END
