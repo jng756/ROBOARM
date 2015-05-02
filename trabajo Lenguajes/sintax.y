@@ -1104,8 +1104,11 @@ condicion:
 
 escritura:
 	//El print lo genera solo para mensajes
-	PRINT '(' mensaje ')' ';' endl
-
+	PRINT '(' mensaje ')' 
+	{
+		myQuadStructure<<"ENDL"<<endl;
+	}
+	';' endl
 	;
 
 

@@ -9,6 +9,7 @@ READ	b3
 ==	b1	true	 t[1]
 IF	t[1]
 PRINT	"Se presiono boton 1"
+ENDL
 SLEEP	50
 ==	b1	true	 t[2]
 WHILE	t[2]
@@ -18,6 +19,7 @@ ENDIF
 ==	b2	true	 t[3]
 IF	t[3]
 PRINT	"Se presiono boton 2"
+ENDL
 SLEEP	50
 ==	b1	true	 t[4]
 WHILE	t[4]
@@ -27,6 +29,7 @@ ENDIF
 ==	b3	true	 t[5]
 IF	t[5]
 PRINT	"Se presiono boton 3"
+ENDL
 SLEEP	50
 ==	b1	true	 t[6]
 WHILE	t[6]

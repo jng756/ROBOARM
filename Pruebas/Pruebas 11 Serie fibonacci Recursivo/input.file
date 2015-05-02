@@ -1,0 +1,27 @@
+program x;
+var 
+numero : int;
+
+function fibonacci( num : int) : int
+var resultado : int;
+{
+    if (num<=2)
+    {
+	resultado = num;
+    }
+
+
+    if (num > 2)
+    {
+     resultado = fibonacci(num-1) + fibonacci(num-2);
+    }
+ret resultado
+};
+
+begin
+numero=7;
+print("Resultado: ", fibonacci(numero));
+
+end
+
+

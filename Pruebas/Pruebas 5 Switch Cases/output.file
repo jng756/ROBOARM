@@ -2,15 +2,20 @@ VAR	grade	tipo	char
 BEGIN
 =	'A'	grade
 PRINT	"YOUR GRADE IS"
+ENDL
 CASE	grade
 OPTION	'A'
 PRINT	"Excellent"
+ENDL
 OPTION	'B'
 PRINT	"Good"
+ENDL
 OPTION	'C'
 PRINT	"enough"
+ENDL
 OPTION	'D'
 EXTRAOPTION	'E'
 PRINT	"not enough"
+ENDL
 ENDCASE
 END

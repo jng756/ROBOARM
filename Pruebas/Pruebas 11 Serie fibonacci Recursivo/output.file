@@ -1,0 +1,23 @@
+VAR	numero	tipo	int
+FUNCTION 	fibonacci 	int
+PASS		num	int
+ENDFUNCTION
+VAR	resultado	tipo	int
+<=	num	2	 t[1]
+IF	t[1]
+=	num	resultado
+ENDIF
+>	num	2	 t[2]
+IF	t[2]
+-	num	1	 t[3]
+-	num	2	 t[4]
++	fibonacci(t[3])	fibonacci(t[4])	 t[5]
+=	t[5]	resultado
+ENDIF
+RETURN	resultado
+BEGIN
+=	7	numero
+PRINT	"Resultado: "
+PRINT	fibonacci(numero)
+ENDL
+END

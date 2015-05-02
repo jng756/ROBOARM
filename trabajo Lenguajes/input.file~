@@ -1,28 +1,26 @@
 program x;
 var 
-resultado, contador : int;
-uno : int;
-y : bool;
-
-function suma(op1:int, op2:int) : int
-	var resultado:int;
-{
-	resultado=op1+op2;
-	ret resultado
-};
-
+num: int;
+b: int;
+fibonacci: int;
+i : int;
+anterior : int;
 
 begin
+num=7;
+b=1;
+fibonacci=0;
+i=1;
 
-resultado=contador+suma(4*4,5);
-uno=20;
-if (uno<=resultado)
-{
- print ("Resultado",4);	
-}
-else
-{
- print("Resultado",true);
-}
+
+ while(i<=num) do
+     {
+     anterior=b;
+     b=fibonacci;
+     fibonacci=anterior+b;
+     print("Fibonacci: ",fibonacci);
+     i=i+1;
+    };     
 end
+
 

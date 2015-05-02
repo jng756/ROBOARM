@@ -16,4 +16,5 @@ RETURN	resultado
 BEGIN
 PRINT	"Resultado: "
 PRINT	factorial(7)
+ENDL
 END
