@@ -6,34 +6,31 @@ WHILE	true
 READ	b1
 READ	b2
 READ	b3
-==	b1	true	 t[1]
+==	b1	false	 t[1]
 IF	t[1]
 PRINT	"Se presiono boton 1"
 ENDL
-SLEEP	50
-==	b1	true	 t[2]
+==	b1	false	 t[2]
 WHILE	t[2]
 READ	b1
 ENDWHILE
 ENDIF
-==	b2	true	 t[3]
+==	b2	false	 t[3]
 IF	t[3]
 PRINT	"Se presiono boton 2"
 ENDL
-SLEEP	50
-==	b1	true	 t[4]
+==	b2	false	 t[4]
 WHILE	t[4]
-READ	b1
+READ	b2
 ENDWHILE
 ENDIF
-==	b3	true	 t[5]
+==	b3	false	 t[5]
 IF	t[5]
 PRINT	"Se presiono boton 3"
 ENDL
-SLEEP	50
-==	b1	true	 t[6]
+==	b3	false	 t[6]
 WHILE	t[6]
-READ	b1
+READ	b3
 ENDWHILE
 ENDIF
 ENDWHILE

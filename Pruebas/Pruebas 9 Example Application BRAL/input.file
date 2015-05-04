@@ -5,16 +5,19 @@ b1, b2, b3 :bool;
 function mov1(): void
 {
   rotateWaist(110);
+  sleep(1);
 };
 
 function mov2():void
 {
   rotateShoulder(90);
+  sleep(1);
 };
 
 function mov3():void
 {
   rotateElbow(145);
+  sleep(1);
 };
 
 begin
@@ -25,30 +28,27 @@ while (true) do
   read(b2);
   read(b3);
 
-if (b1==true) 
+if (b1==false) 
 {
    mov1();
-   sleep(50);
-   while (b1==true) do
+   while (b1==false) do
 	{
 	  read(b1);	
 	};
 }
-if (b2==true) 
+if (b2==false) 
 {
    mov2();
-   sleep(50);
-   while (b2==true) do
+   while (b2==false) do
 	{
 	  read(b2);	
 	};
 
 }
-if (b3==true) 
+if (b3==false) 
 {
    mov3();
-   sleep(50);
-   while (b3==true) do
+   while (b3==false) do
 	{
 	  read(b3);	
 	};

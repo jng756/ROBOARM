@@ -10,34 +10,34 @@ while (true) do
   read(b2);
   read(b3);
 
-if (b1==true) 
-{
-   print("Se presiono boton 1");
-   sleep(50);
-   while(b1==true)do
+	if (b1==false) 
 	{
-	  read(b1);	
-	};
-}
-if (b2==true) 
-{
-   print("Se presiono boton 2");
-   sleep(50);
-   while(b1==true) do
+	   print("Se presiono boton 1");
+	   
+	   while(b1==false)do
+		{
+		  read(b1);	
+		};
+	}
+	if (b2==false) 
 	{
-	  read(b1);	
-	};
+	   print("Se presiono boton 2");
+	   
+	   while(b2==false) do
+		{
+		  read(b2);	
+		};
 
-}
-if (b3==true) 
-{
-   print("Se presiono boton 3");
-   sleep(50);
-   while(b1==true) do
+	}
+	if (b3==false) 
 	{
-	  read(b1);	
-	};
-}
+	   print("Se presiono boton 3");
+	   
+	   while(b3==false) do
+		{
+		  read(b3);	
+		};
+	}
 };
 
 end
