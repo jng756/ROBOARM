@@ -1,23 +1,49 @@
-VAR	num	tipo	int
-VAR	b	tipo	int
-VAR	fibonacci	tipo	int
-VAR	i	tipo	int
-VAR	anterior	tipo	int
+VAR	b1	tipo	bool
+VAR	b2	tipo	bool
+VAR	b3	tipo	bool
+FUNCTION 	mov1 	void
+ENDFUNCTION
+RWAIST	110
+RETVOID
+FUNCTION 	mov2 	void
+ENDFUNCTION
+RSHOULDER	90
+RETVOID
+FUNCTION 	mov3 	void
+ENDFUNCTION
+RELBOW	145
+RETVOID
 BEGIN
-=	7	num
-=	1	b
-=	0	fibonacci
-=	1	i
-<=	i	num	 t[1]
-WHILE	t[1]
-=	b	anterior
-=	fibonacci	b
-+	anterior	b	 t[2]
-=	t[2]	fibonacci
-PRINT	"Fibonacci: "
-PRINT	fibonacci
-ENDL
-+	i	1	 t[3]
-=	t[3]	i
+WHILE	true
+READ	b1
+READ	b2
+READ	b3
+==	b1	true	 t[1]
+IF	t[1]
+CALL	mov1()
+SLEEP	50
+==	b1	true	 t[2]
+WHILE	t[2]
+READ	b1
+ENDWHILE
+ENDIF
+==	b2	true	 t[3]
+IF	t[3]
+CALL	mov2()
+SLEEP	50
+==	b2	true	 t[4]
+WHILE	t[4]
+READ	b2
+ENDWHILE
+ENDIF
+==	b3	true	 t[5]
+IF	t[5]
+CALL	mov3()
+SLEEP	50
+==	b3	true	 t[6]
+WHILE	t[6]
+READ	b3
+ENDWHILE
+ENDIF
 ENDWHILE
 END

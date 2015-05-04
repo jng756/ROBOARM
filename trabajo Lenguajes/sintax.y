@@ -1327,9 +1327,10 @@ llamadas:
 	ID '(' params ')' ';' endl
 	{
 
-		{
 			int tipo=-1;
 			string params="";
+			string variable="";
+			string acum;
 			tipo=buscaFuncion($1, params);
 			cout<<"Funcion: "<<$1<<"\tTipo:"<<tipo<<"\tParametros registrados: "<<params<<endl;
 				if (tipo == -1)
@@ -1349,7 +1350,22 @@ llamadas:
 					cout<<"Wrong parameters! on line number"<<line_num<<endl;
 					exit(-1);
 				}
-		}
+
+			//Para producir el operando
+			variable+=$1;
+			variable+="(";
+			//El primero es sin la coma
+			if(lista_params.dequeue(acum))
+				variable+=acum;
+			//Los siguientes se les antepone una coma
+			while(lista_params.dequeue(acum))
+			{
+			 variable+=",";
+			 variable+=acum;
+			}
+			variable+=")";
+		myQuadStructure<<"CALL\t"<<variable<<endl;
+		
 	}
 
 	;

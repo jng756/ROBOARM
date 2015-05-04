@@ -20,6 +20,7 @@ READ	b2
 READ	b3
 ==	b1	true	 t[1]
 IF	t[1]
+CALL	mov1()
 SLEEP	50
 ==	b1	true	 t[2]
 WHILE	t[2]
@@ -28,6 +29,7 @@ ENDWHILE
 ENDIF
 ==	b2	true	 t[3]
 IF	t[3]
+CALL	mov2()
 SLEEP	50
 ==	b2	true	 t[4]
 WHILE	t[4]
@@ -36,6 +38,7 @@ ENDWHILE
 ENDIF
 ==	b3	true	 t[5]
 IF	t[5]
+CALL	mov3()
 SLEEP	50
 ==	b3	true	 t[6]
 WHILE	t[6]

@@ -1,18 +1,24 @@
-VAR	factorial	tipo	int
-VAR	contador	tipo	int
-VAR	numero	tipo	int
+VAR	num	tipo	int
+VAR	b	tipo	int
+VAR	fibonacci	tipo	int
+VAR	i	tipo	int
+VAR	anterior	tipo	int
 BEGIN
-=	7	numero
-=	numero	contador
-=	1	factorial
->=	contador	1	 t[1]
+=	7	num
+=	1	b
+=	0	fibonacci
+=	1	i
+<=	i	num	 t[1]
 WHILE	t[1]
-*	factorial	contador	 t[2]
-=	t[2]	factorial
--	contador	1	 t[3]
-=	t[3]	contador
-ENDWHILE
-PRINT	"Resultado: "
-PRINT	factorial
+=	b	anterior
+=	fibonacci	b
++	anterior	b	 t[2]
+=	t[2]	fibonacci
+PRINT	"Fibonacci: "
++	fibonacci	5	 t[3]
+PRINT	t[3]
 ENDL
++	i	1	 t[4]
+=	t[4]	i
+ENDWHILE
 END
