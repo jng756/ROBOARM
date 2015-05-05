@@ -77,6 +77,7 @@
 #include "Structures/queue.h"
 #include "Structures/Table.h"
 #include "Structures/cubo.h"
+#include "maqVirtual.h"
 using namespace std;
 
 extern "C" int yylex();
@@ -823,7 +824,7 @@ int guardaFuncion(int n, string nombre, int tipo, string params)
 
 
 /* Line 268 of yacc.c  */
-#line 827 "sintax.tab.c"
+#line 828 "sintax.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -898,7 +899,7 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 761 "sintax.y"
+#line 762 "sintax.y"
 
 	int ival;
 	float fval;
@@ -909,7 +910,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 913 "sintax.tab.c"
+#line 914 "sintax.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -921,7 +922,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 925 "sintax.tab.c"
+#line 926 "sintax.tab.c"
 
 #ifdef short
 # undef short
@@ -1262,18 +1263,18 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   831,   831,   835,   831,   848,   863,   845,   874,   892,
-     872,   899,   905,   915,   922,   927,   928,   932,   942,   953,
-     958,   965,   966,   967,   968,   969,   973,   980,   973,   989,
-     993,   998,   992,  1009,  1014,  1008,  1023,  1024,  1028,  1029,
-    1030,  1031,  1032,  1033,  1034,  1035,  1036,  1041,  1040,  1076,
-    1099,  1075,  1108,  1107,  1117,  1116,  1142,  1143,  1147,  1157,
-    1170,  1174,  1178,  1184,  1189,  1202,  1226,  1200,  1235,  1265,
-    1291,  1297,  1302,  1307,  1312,  1317,  1327,  1375,  1374,  1382,
-    1386,  1408,  1434,  1438,  1438,  1447,  1446,  1456,  1455,  1466,
-    1465,  1476,  1475,  1485,  1484,  1493,  1497,  1499,  1498,  1510,
-    1509,  1523,  1525,  1524,  1534,  1533,  1544,  1545,  1549,  1594,
-    1607,  1612,  1618,  1624,  1629,  1636,  1656,  1676,  1680,  1681
+       0,   832,   832,   836,   832,   849,   864,   846,   875,   893,
+     873,   900,   906,   916,   923,   928,   929,   933,   943,   954,
+     959,   966,   967,   968,   969,   970,   974,   981,   974,   990,
+     994,   999,   993,  1010,  1015,  1009,  1024,  1025,  1029,  1030,
+    1031,  1032,  1033,  1034,  1035,  1036,  1037,  1042,  1041,  1077,
+    1100,  1076,  1109,  1108,  1118,  1117,  1143,  1144,  1148,  1158,
+    1171,  1175,  1179,  1185,  1190,  1203,  1227,  1201,  1236,  1266,
+    1292,  1298,  1303,  1308,  1313,  1318,  1328,  1376,  1375,  1383,
+    1387,  1409,  1435,  1439,  1439,  1448,  1447,  1457,  1456,  1467,
+    1466,  1477,  1476,  1486,  1485,  1494,  1498,  1500,  1499,  1511,
+    1510,  1524,  1526,  1525,  1535,  1534,  1545,  1546,  1550,  1595,
+    1608,  1613,  1619,  1625,  1630,  1637,  1657,  1677,  1681,  1682
 };
 #endif
 
@@ -2384,7 +2385,7 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 831 "sintax.y"
+#line 832 "sintax.y"
     {
 		//Registra el nombre del programa
 		pragma.setNombre((yyvsp[(2) - (2)].sval));
@@ -2394,7 +2395,7 @@ yyreduce:
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 835 "sintax.y"
+#line 836 "sintax.y"
     {
 		
 		//Al terminar de declarar variables desahbilita que las variables de alojen de forma local a la función
@@ -2405,7 +2406,7 @@ yyreduce:
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 848 "sintax.y"
+#line 849 "sintax.y"
     {
 			//Activia alojamiento local a la funcion
 			localFlag=true;
@@ -2424,7 +2425,7 @@ yyreduce:
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 863 "sintax.y"
+#line 864 "sintax.y"
     {	
 			//vaciar la estructura de variables para iniciar una nueva funcion
 			entry.setVarTable(new HashMap<varEntry>);
@@ -2436,7 +2437,7 @@ yyreduce:
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 874 "sintax.y"
+#line 875 "sintax.y"
     {
 		//Activia alojamiento local a la funcion
 		localFlag=true;
@@ -2458,7 +2459,7 @@ yyreduce:
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 892 "sintax.y"
+#line 893 "sintax.y"
     {	
 
 			//vaciar la estructura de variables para iniciar una nueva funcion
@@ -2470,7 +2471,7 @@ yyreduce:
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 906 "sintax.y"
+#line 907 "sintax.y"
     {
 		
 		if (!guardaParametros((yyvsp[(3) - (5)].sval),(yyvsp[(5) - (5)].ival)))
@@ -2485,7 +2486,7 @@ yyreduce:
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 916 "sintax.y"
+#line 917 "sintax.y"
     {
 		if (!guardaParametros((yyvsp[(1) - (3)].sval),(yyvsp[(3) - (3)].ival)))
 			{
@@ -2497,7 +2498,7 @@ yyreduce:
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 933 "sintax.y"
+#line 934 "sintax.y"
     {
 
 			if (!guardaVars((yyvsp[(4) - (6)].ival)))
@@ -2511,7 +2512,7 @@ yyreduce:
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 943 "sintax.y"
+#line 944 "sintax.y"
     {
 			if (!guardaVars((yyvsp[(3) - (5)].ival)))
 			{
@@ -2524,7 +2525,7 @@ yyreduce:
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 954 "sintax.y"
+#line 955 "sintax.y"
     {
 		IDQueue.enqueue((yyvsp[(3) - (3)].sval));
 		
@@ -2534,7 +2535,7 @@ yyreduce:
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 959 "sintax.y"
+#line 960 "sintax.y"
     {
 		IDQueue.enqueue((yyvsp[(1) - (1)].sval));
 	}
@@ -2543,42 +2544,42 @@ yyreduce:
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 965 "sintax.y"
+#line 966 "sintax.y"
     {(yyval.ival)=2;}
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 966 "sintax.y"
+#line 967 "sintax.y"
     {(yyval.ival)=3;}
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 967 "sintax.y"
+#line 968 "sintax.y"
     {(yyval.ival)=1;}
     break;
 
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 968 "sintax.y"
+#line 969 "sintax.y"
     {(yyval.ival)=0;}
     break;
 
   case 25:
 
 /* Line 1806 of yacc.c  */
-#line 969 "sintax.y"
+#line 970 "sintax.y"
     {(yyval.ival)=4;}
     break;
 
   case 26:
 
 /* Line 1806 of yacc.c  */
-#line 973 "sintax.y"
+#line 974 "sintax.y"
     {
 
 		//Debug
@@ -2590,7 +2591,7 @@ yyreduce:
   case 27:
 
 /* Line 1806 of yacc.c  */
-#line 980 "sintax.y"
+#line 981 "sintax.y"
     {
 			//Debug
 			myQuadStructure<<"END"<<endl;
@@ -2601,7 +2602,7 @@ yyreduce:
   case 30:
 
 /* Line 1806 of yacc.c  */
-#line 993 "sintax.y"
+#line 994 "sintax.y"
     {
 		//Debug
 		cout<<"****Function  Code****"<<endl;
@@ -2611,7 +2612,7 @@ yyreduce:
   case 31:
 
 /* Line 1806 of yacc.c  */
-#line 998 "sintax.y"
+#line 999 "sintax.y"
     {
 		if (generaRET()==-1)
 		{
@@ -2623,7 +2624,7 @@ yyreduce:
   case 33:
 
 /* Line 1806 of yacc.c  */
-#line 1009 "sintax.y"
+#line 1010 "sintax.y"
     {
 		//Debug
 		cout<<"****Function  Code****"<<endl;
@@ -2633,7 +2634,7 @@ yyreduce:
   case 34:
 
 /* Line 1806 of yacc.c  */
-#line 1014 "sintax.y"
+#line 1015 "sintax.y"
     {
 		//Debug
 		cout<<"Return void"<<endl;
@@ -2644,7 +2645,7 @@ yyreduce:
   case 47:
 
 /* Line 1806 of yacc.c  */
-#line 1041 "sintax.y"
+#line 1042 "sintax.y"
     {
 		int tipoID;
 		int tipoExp;
@@ -2680,7 +2681,7 @@ yyreduce:
   case 49:
 
 /* Line 1806 of yacc.c  */
-#line 1076 "sintax.y"
+#line 1077 "sintax.y"
     {
 		int tipoBool;
 		string operador;
@@ -2708,7 +2709,7 @@ yyreduce:
   case 50:
 
 /* Line 1806 of yacc.c  */
-#line 1099 "sintax.y"
+#line 1100 "sintax.y"
     {
 		myQuadStructure<<"ENDIF"<<endl;
 	}
@@ -2717,7 +2718,7 @@ yyreduce:
   case 52:
 
 /* Line 1806 of yacc.c  */
-#line 1108 "sintax.y"
+#line 1109 "sintax.y"
     {
 		myQuadStructure<<"ENDL"<<endl;
 	}
@@ -2726,7 +2727,7 @@ yyreduce:
   case 54:
 
 /* Line 1806 of yacc.c  */
-#line 1117 "sintax.y"
+#line 1118 "sintax.y"
     {
 	
 
@@ -2745,7 +2746,7 @@ yyreduce:
   case 55:
 
 /* Line 1806 of yacc.c  */
-#line 1135 "sintax.y"
+#line 1136 "sintax.y"
     {
 	myQuadStructure<<"ENDCASE"<<endl;
 	}
@@ -2754,7 +2755,7 @@ yyreduce:
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 1148 "sintax.y"
+#line 1149 "sintax.y"
     {
 	if (tipoCase!=(yyvsp[(3) - (3)].ival))
 	{
@@ -2768,7 +2769,7 @@ yyreduce:
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 1158 "sintax.y"
+#line 1159 "sintax.y"
     {
 	if (tipoCase!=(yyvsp[(1) - (1)].ival))
 	{
@@ -2782,7 +2783,7 @@ yyreduce:
   case 60:
 
 /* Line 1806 of yacc.c  */
-#line 1170 "sintax.y"
+#line 1171 "sintax.y"
     {
 		(yyval.ival)=2;
 		optionStr=(yyvsp[(1) - (1)].sval);
@@ -2792,7 +2793,7 @@ yyreduce:
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 1174 "sintax.y"
+#line 1175 "sintax.y"
     {
 		(yyval.ival)=3;
 		optionStr=(yyvsp[(1) - (1)].sval);
@@ -2802,7 +2803,7 @@ yyreduce:
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 1178 "sintax.y"
+#line 1179 "sintax.y"
     {
 
 		(yyval.ival)=1;
@@ -2814,7 +2815,7 @@ yyreduce:
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 1184 "sintax.y"
+#line 1185 "sintax.y"
     {
 		(yyval.ival)=0;
 		optionStr=(yyvsp[(1) - (1)].sval);
@@ -2825,7 +2826,7 @@ yyreduce:
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 1189 "sintax.y"
+#line 1190 "sintax.y"
     {
 		(yyval.ival)=4;
 		optionStr=(yyvsp[(1) - (1)].sval);
@@ -2835,7 +2836,7 @@ yyreduce:
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 1202 "sintax.y"
+#line 1203 "sintax.y"
     {
 
 		int tipoBool;
@@ -2863,7 +2864,7 @@ yyreduce:
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 1226 "sintax.y"
+#line 1227 "sintax.y"
     {
 	 	myQuadStructure<<"ENDWHILE"<<endl;
 	 }
@@ -2872,7 +2873,7 @@ yyreduce:
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 1236 "sintax.y"
+#line 1237 "sintax.y"
     {
 		
 	string operador;
@@ -2904,7 +2905,7 @@ yyreduce:
   case 69:
 
 /* Line 1806 of yacc.c  */
-#line 1267 "sintax.y"
+#line 1268 "sintax.y"
     {
 		int tipoID;
 
@@ -2930,7 +2931,7 @@ yyreduce:
   case 70:
 
 /* Line 1806 of yacc.c  */
-#line 1292 "sintax.y"
+#line 1293 "sintax.y"
     {
 		if (generaEspecial(0)==-1)
 			exit(-1);
@@ -2940,7 +2941,7 @@ yyreduce:
   case 71:
 
 /* Line 1806 of yacc.c  */
-#line 1298 "sintax.y"
+#line 1299 "sintax.y"
     {
 		if (generaEspecial(1)==-1)
 			exit(-1);
@@ -2950,7 +2951,7 @@ yyreduce:
   case 72:
 
 /* Line 1806 of yacc.c  */
-#line 1303 "sintax.y"
+#line 1304 "sintax.y"
     {
 		if (generaEspecial(2)==-1)
 			exit(-1);
@@ -2960,7 +2961,7 @@ yyreduce:
   case 73:
 
 /* Line 1806 of yacc.c  */
-#line 1308 "sintax.y"
+#line 1309 "sintax.y"
     {
 		if (generaEspecial(3)==-1)
 			exit(-1);
@@ -2970,7 +2971,7 @@ yyreduce:
   case 74:
 
 /* Line 1806 of yacc.c  */
-#line 1313 "sintax.y"
+#line 1314 "sintax.y"
     {
 		if (generaEspecial(4)==-1)
 			exit(-1);
@@ -2980,7 +2981,7 @@ yyreduce:
   case 75:
 
 /* Line 1806 of yacc.c  */
-#line 1318 "sintax.y"
+#line 1319 "sintax.y"
     {
 		if (generaEspecial(5)==-1)
 			exit(-1);
@@ -2990,7 +2991,7 @@ yyreduce:
   case 76:
 
 /* Line 1806 of yacc.c  */
-#line 1328 "sintax.y"
+#line 1329 "sintax.y"
     {
 
 			int tipo=-1;
@@ -3038,7 +3039,7 @@ yyreduce:
   case 77:
 
 /* Line 1806 of yacc.c  */
-#line 1375 "sintax.y"
+#line 1376 "sintax.y"
     {
 		myQuadStructure<<"ELSE"<<endl;
 	}
@@ -3047,7 +3048,7 @@ yyreduce:
   case 78:
 
 /* Line 1806 of yacc.c  */
-#line 1379 "sintax.y"
+#line 1380 "sintax.y"
     {
 		myQuadStructure<<"ENDELSE"<<endl;	
 	}
@@ -3056,7 +3057,7 @@ yyreduce:
   case 80:
 
 /* Line 1806 of yacc.c  */
-#line 1387 "sintax.y"
+#line 1388 "sintax.y"
     {
 		int tipoString;
 		string operador;
@@ -3083,7 +3084,7 @@ yyreduce:
   case 81:
 
 /* Line 1806 of yacc.c  */
-#line 1409 "sintax.y"
+#line 1410 "sintax.y"
     {
 		int tipoString;
 		string operador;
@@ -3110,7 +3111,7 @@ yyreduce:
   case 83:
 
 /* Line 1806 of yacc.c  */
-#line 1438 "sintax.y"
+#line 1439 "sintax.y"
     {
 			pilaOper.push(">");
 		}
@@ -3119,7 +3120,7 @@ yyreduce:
   case 84:
 
 /* Line 1806 of yacc.c  */
-#line 1442 "sintax.y"
+#line 1443 "sintax.y"
     {
 			if(generaExpresion()==-1)
 			exit(-1);
@@ -3129,7 +3130,7 @@ yyreduce:
   case 85:
 
 /* Line 1806 of yacc.c  */
-#line 1447 "sintax.y"
+#line 1448 "sintax.y"
     {
 			pilaOper.push("<");
 		}
@@ -3138,7 +3139,7 @@ yyreduce:
   case 86:
 
 /* Line 1806 of yacc.c  */
-#line 1451 "sintax.y"
+#line 1452 "sintax.y"
     {
 	 		if(generaExpresion()==-1)
 			exit(-1);	
@@ -3148,7 +3149,7 @@ yyreduce:
   case 87:
 
 /* Line 1806 of yacc.c  */
-#line 1456 "sintax.y"
+#line 1457 "sintax.y"
     {
 			pilaOper.push("<=");
 		}
@@ -3157,7 +3158,7 @@ yyreduce:
   case 88:
 
 /* Line 1806 of yacc.c  */
-#line 1461 "sintax.y"
+#line 1462 "sintax.y"
     {
 	 		if(generaExpresion()==-1)
 			exit(-1);	
@@ -3167,7 +3168,7 @@ yyreduce:
   case 89:
 
 /* Line 1806 of yacc.c  */
-#line 1466 "sintax.y"
+#line 1467 "sintax.y"
     {
 			pilaOper.push(">=");
 		}
@@ -3176,7 +3177,7 @@ yyreduce:
   case 90:
 
 /* Line 1806 of yacc.c  */
-#line 1470 "sintax.y"
+#line 1471 "sintax.y"
     {
 	 		if(generaExpresion()==-1)
 			exit(-1);	
@@ -3186,7 +3187,7 @@ yyreduce:
   case 91:
 
 /* Line 1806 of yacc.c  */
-#line 1476 "sintax.y"
+#line 1477 "sintax.y"
     {
 			pilaOper.push("<>");
 		}
@@ -3195,7 +3196,7 @@ yyreduce:
   case 92:
 
 /* Line 1806 of yacc.c  */
-#line 1480 "sintax.y"
+#line 1481 "sintax.y"
     {
 	 		if(generaExpresion()==-1)
 			exit(-1);	
@@ -3205,7 +3206,7 @@ yyreduce:
   case 93:
 
 /* Line 1806 of yacc.c  */
-#line 1485 "sintax.y"
+#line 1486 "sintax.y"
     {
 			pilaOper.push("==");
 		}
@@ -3214,7 +3215,7 @@ yyreduce:
   case 94:
 
 /* Line 1806 of yacc.c  */
-#line 1489 "sintax.y"
+#line 1490 "sintax.y"
     {
 			if(generaExpresion()==-1)
 			exit(-1);	
@@ -3224,7 +3225,7 @@ yyreduce:
   case 97:
 
 /* Line 1806 of yacc.c  */
-#line 1499 "sintax.y"
+#line 1500 "sintax.y"
     {
 		pilaOper.push("+");
 		
@@ -3234,7 +3235,7 @@ yyreduce:
   case 98:
 
 /* Line 1806 of yacc.c  */
-#line 1505 "sintax.y"
+#line 1506 "sintax.y"
     {
 		if(generaExpresion()==-1)
 			exit(-1);
@@ -3244,7 +3245,7 @@ yyreduce:
   case 99:
 
 /* Line 1806 of yacc.c  */
-#line 1510 "sintax.y"
+#line 1511 "sintax.y"
     {
 		pilaOper.push("-");
 	}
@@ -3253,7 +3254,7 @@ yyreduce:
   case 100:
 
 /* Line 1806 of yacc.c  */
-#line 1514 "sintax.y"
+#line 1515 "sintax.y"
     {
 		if(generaExpresion()==-1)
 			exit(-1);
@@ -3263,7 +3264,7 @@ yyreduce:
   case 102:
 
 /* Line 1806 of yacc.c  */
-#line 1525 "sintax.y"
+#line 1526 "sintax.y"
     {
 		pilaOper.push("*");
 	}
@@ -3272,7 +3273,7 @@ yyreduce:
   case 103:
 
 /* Line 1806 of yacc.c  */
-#line 1529 "sintax.y"
+#line 1530 "sintax.y"
     {
 		if(generaExpresion()==-1)
 			exit(-1);
@@ -3282,7 +3283,7 @@ yyreduce:
   case 104:
 
 /* Line 1806 of yacc.c  */
-#line 1534 "sintax.y"
+#line 1535 "sintax.y"
     {
 	pilaOper.push("/");
 	}
@@ -3291,7 +3292,7 @@ yyreduce:
   case 105:
 
 /* Line 1806 of yacc.c  */
-#line 1538 "sintax.y"
+#line 1539 "sintax.y"
     {
 		if(generaExpresion()==-1)
 			exit(-1);
@@ -3301,7 +3302,7 @@ yyreduce:
   case 108:
 
 /* Line 1806 of yacc.c  */
-#line 1550 "sintax.y"
+#line 1551 "sintax.y"
     {
 		int tipo=-1;
 		string params="";
@@ -3350,7 +3351,7 @@ yyreduce:
   case 109:
 
 /* Line 1806 of yacc.c  */
-#line 1595 "sintax.y"
+#line 1596 "sintax.y"
     {
 		int tipo;
 		tipo=buscaID((yyvsp[(1) - (1)].sval));
@@ -3368,7 +3369,7 @@ yyreduce:
   case 110:
 
 /* Line 1806 of yacc.c  */
-#line 1607 "sintax.y"
+#line 1608 "sintax.y"
     {
 
 		pilaO.push((yyvsp[(1) - (1)].sval));
@@ -3379,7 +3380,7 @@ yyreduce:
   case 111:
 
 /* Line 1806 of yacc.c  */
-#line 1612 "sintax.y"
+#line 1613 "sintax.y"
     {
 
 		pilaO.push((yyvsp[(1) - (1)].sval));
@@ -3391,7 +3392,7 @@ yyreduce:
   case 112:
 
 /* Line 1806 of yacc.c  */
-#line 1618 "sintax.y"
+#line 1619 "sintax.y"
     {
 
 		pilaO.push((yyvsp[(1) - (1)].sval));
@@ -3403,7 +3404,7 @@ yyreduce:
   case 113:
 
 /* Line 1806 of yacc.c  */
-#line 1624 "sintax.y"
+#line 1625 "sintax.y"
     {
 		pilaO.push((yyvsp[(1) - (1)].sval));
 		pTipos.push(0);
@@ -3414,7 +3415,7 @@ yyreduce:
   case 114:
 
 /* Line 1806 of yacc.c  */
-#line 1629 "sintax.y"
+#line 1630 "sintax.y"
     {
 		pilaO.push((yyvsp[(1) - (1)].sval));
 		pTipos.push(4);
@@ -3424,7 +3425,7 @@ yyreduce:
   case 115:
 
 /* Line 1806 of yacc.c  */
-#line 1637 "sintax.y"
+#line 1638 "sintax.y"
     {	int tipoExp;
 		string operando;
 		if (!pTipos.pop(tipoExp))
@@ -3449,7 +3450,7 @@ yyreduce:
   case 116:
 
 /* Line 1806 of yacc.c  */
-#line 1657 "sintax.y"
+#line 1658 "sintax.y"
     {
 		int tipoExp;
 		string operando;
@@ -3474,7 +3475,7 @@ yyreduce:
 
 
 /* Line 1806 of yacc.c  */
-#line 3478 "sintax.tab.c"
+#line 3479 "sintax.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3705,13 +3706,17 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 1683 "sintax.y"
+#line 1684 "sintax.y"
 
 
 main() {
 
+
 	// open a file handle to a particular file:
 	FILE *myfile = fopen("input.file", "r");
+	
+	ifstream archivoEntrada;
+
 	// make sure it is valid:
 	if (!myfile) {
 		cout << "No se pudo abrir ningun archivo" << endl;
@@ -3725,6 +3730,20 @@ main() {
 	} while (!feof(yyin));
 
 	myQuadStructure.close();
+
+    
+    archivoEntrada.open("output.file");
+    if (archivoEntrada.fail())
+    {
+    	cout<<"No existe el archivo de cuadruplos"<<endl;
+    }
+    else
+	{
+
+    maqVirtual(archivoEntrada);
+	}
+    return 0;
+
 
 }
 

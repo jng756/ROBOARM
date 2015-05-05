@@ -10,28 +10,28 @@ READ	b3
 IF	t[1]
 PRINT	"Se presiono boton 1"
 ENDL
+ENDIF
 ==	b1	false	 t[2]
 WHILE	t[2]
 READ	b1
 ENDWHILE
-ENDIF
 ==	b2	false	 t[3]
 IF	t[3]
 PRINT	"Se presiono boton 2"
 ENDL
+ENDIF
 ==	b2	false	 t[4]
 WHILE	t[4]
 READ	b2
 ENDWHILE
-ENDIF
 ==	b3	false	 t[5]
 IF	t[5]
 PRINT	"Se presiono boton 3"
 ENDL
+ENDIF
 ==	b3	false	 t[6]
 WHILE	t[6]
 READ	b3
 ENDWHILE
-ENDIF
 ENDWHILE
 END

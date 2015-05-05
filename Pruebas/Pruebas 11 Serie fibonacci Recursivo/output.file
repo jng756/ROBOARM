@@ -3,16 +3,20 @@ FUNCTION 	fibonacci 	int
 PASS		num	int
 ENDFUNCTION
 VAR	resultado	tipo	int
-<=	num	2	 t[1]
+<	num	2	 t[1]
 IF	t[1]
-=	num	resultado
+=	1	resultado
 ENDIF
->	num	2	 t[2]
+==	num	2	 t[2]
 IF	t[2]
--	num	1	 t[3]
--	num	2	 t[4]
-+	fibonacci(t[3])	fibonacci(t[4])	 t[5]
-=	t[5]	resultado
+=	1	resultado
+ENDIF
+>	num	2	 t[3]
+IF	t[3]
+-	num	1	 t[4]
+-	num	2	 t[5]
++	fibonacci(t[4])	fibonacci(t[5])	 t[6]
+=	t[6]	resultado
 ENDIF
 RETURN	resultado
 BEGIN

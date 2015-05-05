@@ -5,9 +5,14 @@ numero : int;
 function fibonacci( num : int) : int
 var resultado : int;
 {
-    if (num<=2)
+    if (num<2)
     {
-	resultado = num;
+	resultado = 1;
+    }
+
+    if (num==2)
+    {
+	resultado = 1;
     }
 
 
@@ -15,6 +20,7 @@ var resultado : int;
     {
      resultado = fibonacci(num-1) + fibonacci(num-2);
     }
+  
 ret resultado
 };
 

@@ -8,6 +8,7 @@
 #include "Structures/queue.h"
 #include "Structures/Table.h"
 #include "Structures/cubo.h"
+#include "maqVirtual.h"
 using namespace std;
 
 extern "C" int yylex();
@@ -1684,8 +1685,12 @@ endl:
 
 main() {
 
+
 	// open a file handle to a particular file:
 	FILE *myfile = fopen("input.file", "r");
+	
+	ifstream archivoEntrada;
+
 	// make sure it is valid:
 	if (!myfile) {
 		cout << "No se pudo abrir ningun archivo" << endl;
@@ -1699,6 +1704,20 @@ main() {
 	} while (!feof(yyin));
 
 	myQuadStructure.close();
+
+    
+    archivoEntrada.open("output.file");
+    if (archivoEntrada.fail())
+    {
+    	cout<<"No existe el archivo de cuadruplos"<<endl;
+    }
+    else
+	{
+
+    maqVirtual(archivoEntrada);
+	}
+    return 0;
+
 
 }
 

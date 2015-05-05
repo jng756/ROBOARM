@@ -13,33 +13,30 @@ while (true) do
 	if (b1==false) 
 	{
 	   print("Se presiono boton 1");
-	   
+	}
 	   while(b1==false)do
 		{
 		  read(b1);	
 		};
-	}
 	if (b2==false) 
 	{
 	   print("Se presiono boton 2");
-	   
+	}   
 	   while(b2==false) do
 		{
 		  read(b2);	
 		};
 
-	}
+	
 	if (b3==false) 
 	{
 	   print("Se presiono boton 3");
-	   
+	}   
 	   while(b3==false) do
 		{
 		  read(b3);	
 		};
-	}
+	
 };
 
 end
-
-
