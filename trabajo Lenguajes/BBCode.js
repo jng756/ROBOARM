@@ -51,19 +51,19 @@ var b3;
 
 function mov1() {
   rotateWaist(120);
-  sleep(1);
+  sleep(1000);
   rotateWaist(60);
 }
 
 function mov2() {
   rotateShoulder(120);
-  sleep(1);
+  sleep(1000);
   rotateShoulder(60);
 }
 
 function mov3() {
   rotateElbow(30);
-  sleep(1);
+  sleep(1000);
   rotateElbow(120);
 }
 while (true)
@@ -74,6 +74,7 @@ while (true)
   if (b1 == false)
   {
     mov1();
+    console.log("se presiono boton 1");
   }
   while (b1 == false)
   {
@@ -82,6 +83,7 @@ while (true)
   if (b2 == false)
   {
     mov2();
+    console.log("se presiono boton 2");
   }
   while (b2 == false)
   {
@@ -90,6 +92,7 @@ while (true)
   if (b3 == false)
   {
     mov3();
+    console.log("se presiono boton 3");
   }
   while (b3 == false)
   {

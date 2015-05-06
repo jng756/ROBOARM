@@ -4,19 +4,19 @@ VAR	b3	tipo	bool
 FUNCTION 	mov1 	void
 ENDFUNCTION
 RWAIST	120
-SLEEP	1
+SLEEP	1000
 RWAIST	60
 RETVOID
 FUNCTION 	mov2 	void
 ENDFUNCTION
 RSHOULDER	120
-SLEEP	1
+SLEEP	1000
 RSHOULDER	60
 RETVOID
 FUNCTION 	mov3 	void
 ENDFUNCTION
 RELBOW	30
-SLEEP	1
+SLEEP	1000
 RELBOW	120
 RETVOID
 BEGIN
@@ -27,6 +27,8 @@ READ	b3
 ==	b1	false	 t[1]
 IF	t[1]
 CALL	mov1()
+PRINT	"se presiono boton 1"
+ENDL
 ENDIF
 ==	b1	false	 t[2]
 WHILE	t[2]
@@ -35,6 +37,8 @@ ENDWHILE
 ==	b2	false	 t[3]
 IF	t[3]
 CALL	mov2()
+PRINT	"se presiono boton 2"
+ENDL
 ENDIF
 ==	b2	false	 t[4]
 WHILE	t[4]
@@ -43,6 +47,8 @@ ENDWHILE
 ==	b3	false	 t[5]
 IF	t[5]
 CALL	mov3()
+PRINT	"se presiono boton 3"
+ENDL
 ENDIF
 ==	b3	false	 t[6]
 WHILE	t[6]

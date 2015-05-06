@@ -12,6 +12,7 @@ void maqVirtual(ifstream &archivoCuadruplos);
 void istabmode();  //Solo para denotar lineas de indentacion
 void checktemp(string &word);
 void InsertHeader(ofstream &archivoSalida);
+void ChecarComillas(string &word, ifstream &archivoCuadruplos);
 
 bool funcmode = false;
 ofstream archivoSalida;
@@ -89,10 +90,16 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "+")
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);  //Verifica si existen temporales para sacar dato de vector
+
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
             //checktemp(word4);
+
+            archivoCuadruplos >> word4;
 
             t.push_back(word2 + " + " + word3);  // Mete operacion en vector
             oper.push_back(2);  // Mete prioridad de operacion en su vector (posicion igual al de temporales)
@@ -103,9 +110,16 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "-")
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
+
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
+
+            archivoCuadruplos >> word4;
+
             //checktemp(word4);
 
             t.push_back(word2 + " - " + word3);
@@ -117,8 +131,8 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "*") //Priority 1
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
-
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
 
             if( oper[numVector]> 1 ) //Verifica si word2 tiene un temporal con operacion de menor prioridad, si es asi le pone parentesis
@@ -126,6 +140,8 @@ void maqVirtual(ifstream &archivoCuadruplos)
                 word2 = "(" + word2 + ")";
             }
 
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
 
             if( oper[numVector]> 1 )
@@ -133,7 +149,7 @@ void maqVirtual(ifstream &archivoCuadruplos)
                 word3 = "(" + word3 + ")";
             }
 
-            //checktemp(word4);
+            archivoCuadruplos >> word4;
 
             t.push_back(word2 + " * " + word3);
             oper.push_back(1);
@@ -144,8 +160,8 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "/")
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
-
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
 
             if( oper[numVector]> 1 ) //Verifica si word2 tiene un temporal con operacion de menor prioridad, si es asi le pone parentesis
@@ -153,6 +169,8 @@ void maqVirtual(ifstream &archivoCuadruplos)
                 word2 = "(" + word2 + ")";
             }
 
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
 
             if( oper[numVector]> 1 )
@@ -160,6 +178,7 @@ void maqVirtual(ifstream &archivoCuadruplos)
                 word3 = "(" + word3 + ")";
             }
 
+            archivoCuadruplos >> word4;
             //checktemp(word4);
 
             t.push_back(word2 + " / " + word3);
@@ -171,8 +190,12 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "=")
         {
-            archivoCuadruplos >> word2 >> word3;
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
+
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
 
             istabmode();
@@ -180,8 +203,12 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "==")
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
+
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
 
             t.push_back(word2 + " == " + word3);
@@ -193,8 +220,12 @@ void maqVirtual(ifstream &archivoCuadruplos)
         }
         if (word1 == "!=")
         {
-            archivoCuadruplos >> word2 >> word3 >> word4;
+            archivoCuadruplos >> word2;
+            ChecarComillas(word2, archivoCuadruplos);
             checktemp(word2);
+
+            archivoCuadruplos >> word3;
+            ChecarComillas(word3, archivoCuadruplos);
             checktemp(word3);
 
             t.push_back(word2 + " != " + word3);
@@ -377,26 +408,28 @@ void maqVirtual(ifstream &archivoCuadruplos)
         {
             archivoCuadruplos >> word2;
 
-            if(word2.substr(0,1) == "\"")  //Verifica si es un string con las 1eras "
-            {
-                //cout << word2.substr(1,word2.length()-1) << endl;
+            ChecarComillas(word2, archivoCuadruplos);
 
-                if (word2.substr(1,word2.length()-1).find("\"") == string::npos) //Checa si hay o no las 2das " en la palabra
-                {
-//                    cout << "Falta agregar \" " << endl;
+//            if(word2.substr(0,1) == "\"")  //Verifica si es un string con las 1eras "
+//            {
+//                //cout << word2.substr(1,word2.length()-1) << endl;
 //
-//                    word2 = word2 + " \"" ; //Se agregan las dobles comillas que faltaban (por un espacio)
-
-                    do      // Si faltan las " finales, ocupa tomar palabras hasta que la encuentre.
-                    {
-                        archivoCuadruplos >> word3;
-                        checktemp(word3);
-
-                        word2 = word2 + " " + word3;
-
-                    }while(word3.find("\"") == string::npos);
-                }
-            }
+//                if (word2.substr(1,word2.length()-1).find("\"") == string::npos) //Checa si hay o no las 2das " en la palabra
+//                {
+////                    cout << "Falta agregar \" " << endl;
+////
+////                    word2 = word2 + " \"" ; //Se agregan las dobles comillas que faltaban (por un espacio)
+//
+//                    do      // Si faltan las " finales, ocupa tomar palabras hasta que la encuentre.
+//                    {
+//                        archivoCuadruplos >> word3;
+//                        checktemp(word3);
+//
+//                        word2 = word2 + " " + word3;
+//
+//                    }while(word3.find("\"") == string::npos);
+//                }
+//            }
 
             checktemp(word2);
 
@@ -602,4 +635,28 @@ void InsertHeader(ofstream &archivoSalida)
 
     headerInfo.close();
 }
+void ChecarComillas(string &word,ifstream &archivoCuadruplos)
+{
+    string tempword;
 
+    if(word.substr(0,1) == "\"")  //Verifica si es un string con las 1eras "
+    {
+        //cout << word.substr(1,word.length()-1) << endl;
+
+        if (word.substr(1,word.length()-1).find("\"") == string::npos) //Checa si hay o no las 2das " en la palabra
+        {
+//          cout << "Falta agregar \" " << endl;
+//
+//          word = word + " \"" ; //Se agregan las dobles comillas que faltaban (por un espacio)
+
+            do      // Si faltan las " finales, ocupa tomar palabras hasta que la encuentre.
+            {
+                archivoCuadruplos >> tempword;
+                checktemp(tempword);
+
+                word = word + " " + tempword;
+
+            }while(tempword.find("\"") == string::npos);
+        }
+    }
+}

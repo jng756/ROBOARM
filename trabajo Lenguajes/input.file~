@@ -34,6 +34,7 @@ while (true) do
 if (b1==false) 
 {
    mov1();
+   print ("se presiono boton 1");
 }
    while (b1==false) do
 	{
@@ -43,6 +44,7 @@ if (b1==false)
 if (b2==false) 
 {
    mov2();
+   print ("se presiono boton 2");
 }
    while (b2==false) do
 	{
@@ -53,6 +55,7 @@ if (b2==false)
 if (b3==false) 
 {
    mov3();
+    print ("se presiono boton 3");
 }
    while (b3==false) do
 	{
